@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BLS sim</title>
+    <title>FiveM Minigames</title>
     <style>
         * {
             margin: 0;
@@ -198,38 +198,38 @@
 
     <div id="menu" class="menu-container">
         <div class="header">
-            <h1>BLS sim</h1>
-            <p>eeeeee wip</p>
+            <h1>FiveM Minigames</h1>
+            <p>Hacking minigame collection</p>
         </div>
 
         <div class="games-grid">
             <div class="game-card" onclick="playGame('data_miner_game')">
-                <div class="game-title">---</div>
+                <div class="game-title">Data Miner</div>
                 <button class="play-button">Play Now</button>
             </div>
 
             <div class="game-card" onclick="playGame('grid_memory_game')">
-                <div class="game-title">Fleeca?</div>
+                <div class="game-title">Grid Memory</div>
                 <button class="play-button">Play Now</button>
             </div>
 
             <div class="game-card" onclick="playGame('letter_sequence_game')">
-                <div class="game-title">Rahaauto?</div>
+                <div class="game-title">Letter Sequence</div>
                 <button class="play-button">Play Now</button>
             </div>
 
             <div class="game-card" onclick="playGame('pair_matching_game')">
-                <div class="game-title">ATM Hack</div>
+                <div class="game-title">Pair Matching</div>
                 <button class="play-button">Play Now</button>
             </div>
 
             <div class="game-card" onclick="playGame('typeracer_game')">
-                <div class="game-title">Krüpto</div>
+                <div class="game-title">TypeRacer</div>
                 <button class="play-button">Play Now</button>
             </div>
 
             <div class="game-card" onclick="playGame('word_memory_game')">
-                <div class="game-title">---</div>
+                <div class="game-title">Word Memory</div>
                 <button class="play-button">Play Now</button>
             </div>
 
@@ -278,17 +278,17 @@
             backButton.style.display = 'none';
 
             // Reset page title
-            document.title = 'BLS sim';
+            document.title = 'FiveM Minigames';
         }
 
         function getGameDisplayName(gameName) {
             const names = {
-                'data_miner_game': '---',
-                'grid_memory_game': '---',
-                'letter_sequence_game': '---',
-                'pair_matching_game': 'ATM Hack',
-                'typeracer_game': 'Krüpto',
-                'word_memory_game': '---',
+                'data_miner_game': 'Data Miner',
+                'grid_memory_game': 'Grid Memory',
+                'letter_sequence_game': 'Letter Sequence',
+                'pair_matching_game': 'Pair Matching',
+                'typeracer_game': 'TypeRacer',
+                'word_memory_game': 'Word Memory',
                 'thermite_game': 'Thermite'
             };
             return names[gameName] || gameName;
