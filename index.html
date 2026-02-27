@@ -4,7 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FiveM Minigames</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --green: #00ff41;
+            --green-dim: #00cc33;
+            --green-glow: rgba(0, 255, 65, 0.15);
+            --green-glow-strong: rgba(0, 255, 65, 0.3);
+            --bg-deep: #050a05;
+            --bg-card: #0a120a;
+            --bg-card-hover: #0f1a0f;
+            --border: #1a2e1a;
+            --border-hover: #2a4a2a;
+            --text: #e0e0e0;
+            --text-dim: #7a8a7a;
+            --mono: 'Share Tech Mono', 'Courier New', monospace;
+            --sans: 'Outfit', system-ui, -apple-system, sans-serif;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,145 +31,321 @@
         }
 
         body {
-            font-family: 'Courier New', monospace;
-            background: #0a0a0a;
-            color: #ffffff;
+            font-family: var(--sans);
+            background: var(--bg-deep);
+            color: var(--text);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
+            overflow-x: hidden;
         }
 
+        /* Scanline overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.03) 2px,
+                rgba(0, 0, 0, 0.03) 4px
+            );
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Grid pattern background */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 20%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 20%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* Menu container */
+        .menu-container {
+            position: relative;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 32px 80px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header */
         .header {
-            text-align: center;
-            margin-bottom: 40px;
-            animation: glow 2s ease-in-out infinite alternate;
+            margin-bottom: 56px;
+            position: relative;
+        }
+
+        .header-label {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: var(--green-dim);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            opacity: 0.8;
+        }
+
+        .header-label::before {
+            content: '> ';
+            opacity: 0.5;
         }
 
         .header h1 {
-            font-size: 3rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 10px;
-            text-shadow: 0 0 20px #ffffff;
+            font-family: var(--sans);
+            font-size: clamp(2.4rem, 5vw, 3.6rem);
+            font-weight: 700;
+            letter-spacing: -1px;
+            color: #fff;
+            line-height: 1.1;
+            margin-bottom: 16px;
         }
 
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.8;
+        .header h1 span {
+            color: var(--green);
+            text-shadow: 0 0 30px var(--green-glow-strong), 0 0 60px var(--green-glow);
+        }
+
+        .header-desc {
+            font-size: 1.05rem;
+            color: var(--text-dim);
+            font-weight: 300;
+            max-width: 420px;
+            line-height: 1.6;
+        }
+
+        .header-line {
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--green);
+            box-shadow: 0 0 12px var(--green-glow-strong);
+        }
+
+        /* Status bar */
+        .status-bar {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 40px;
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            color: var(--text-dim);
             letter-spacing: 1px;
+            flex-wrap: wrap;
         }
 
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 6px var(--green);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Games grid */
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            width: 100%;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
         }
 
+        /* Game card */
         .game-card {
-            background: #1a1a1a;
-            border: 2px solid #333333;
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            transition: all 0.3s ease;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 28px 28px 24px;
             cursor: pointer;
+            transition: all 0.25s ease;
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
         }
 
         .game-card::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
-            width: 100%;
+            left: 0;
+            width: 3px;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: left 0.5s;
-        }
-
-        .game-card:hover::before {
-            left: 100%;
+            background: var(--green);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            box-shadow: 0 0 12px var(--green-glow-strong);
         }
 
         .game-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1);
-            border-color: #666666;
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--border-hover);
         }
 
-        .game-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            display: block;
+        .game-card:hover::before {
+            opacity: 1;
+        }
+
+        .game-card:hover .game-title {
+            color: var(--green);
+        }
+
+        .game-card:hover .card-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .game-card:active {
+            transform: translateY(0);
+        }
+
+        .card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .card-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: rgba(0, 255, 65, 0.06);
+            border: 1px solid rgba(0, 255, 65, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .card-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--green-dim);
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .card-arrow {
+            color: var(--green);
+            font-size: 1.1rem;
+            opacity: 0;
+            transform: translateX(-6px);
+            transition: all 0.25s ease;
+            flex-shrink: 0;
+            margin-top: 4px;
         }
 
         .game-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-family: var(--sans);
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: 0.2px;
+            transition: color 0.25s ease;
         }
 
-        .game-description {
-            font-size: 0.9rem;
-            opacity: 0.8;
+        .game-desc {
+            font-size: 0.85rem;
+            color: var(--text-dim);
             line-height: 1.5;
-            margin-bottom: 20px;
+            font-weight: 300;
         }
 
-        .play-button {
-            background: #333333;
-            border: 2px solid #666666;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-family: inherit;
-            font-weight: bold;
+        .card-tag {
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            color: var(--green-dim);
+            letter-spacing: 2px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 1;
+            opacity: 0.6;
+            margin-top: auto;
         }
 
-        .play-button:hover {
-            transform: scale(1.05);
-            background: #666666;
-            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+        /* Footer */
+        .footer {
+            margin-top: 64px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
+        .footer a {
+            color: var(--green-dim);
+            text-decoration: none;
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.5px;
+            transition: color 0.2s;
+        }
+
+        .footer a:hover {
+            color: var(--green);
+        }
+
+        /* Back button */
         .back-button {
             position: fixed;
             top: 20px;
             left: 20px;
-            background: #1a1a1a;
-            border: 2px solid #666666;
-            color: #ffffff;
+            background: rgba(10, 18, 10, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-hover);
+            color: var(--green);
             padding: 10px 20px;
-            border-radius: 25px;
-            font-family: inherit;
-            font-weight: bold;
-            text-transform: uppercase;
+            border-radius: 6px;
+            font-family: var(--mono);
+            font-size: 0.8rem;
             letter-spacing: 1px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             display: none;
             z-index: 1001;
         }
 
         .back-button:hover {
-            background: #333333;
-            color: white;
+            background: rgba(15, 26, 15, 0.98);
+            border-color: var(--green-dim);
+            box-shadow: 0 0 20px var(--green-glow);
         }
 
+        /* Game frame */
         .game-frame {
             display: none;
             position: fixed;
@@ -168,75 +363,178 @@
             border: none;
         }
 
-        @keyframes glow {
+        /* Staggered card entrance */
+        .game-card {
+            animation: cardIn 0.4s ease-out backwards;
+        }
+        .game-card:nth-child(1) { animation-delay: 0.08s; }
+        .game-card:nth-child(2) { animation-delay: 0.14s; }
+        .game-card:nth-child(3) { animation-delay: 0.20s; }
+        .game-card:nth-child(4) { animation-delay: 0.26s; }
+        .game-card:nth-child(5) { animation-delay: 0.32s; }
+        .game-card:nth-child(6) { animation-delay: 0.38s; }
+        .game-card:nth-child(7) { animation-delay: 0.44s; }
+
+        @keyframes cardIn {
             from {
-                text-shadow: 0 0 20px #ffffff;
+                opacity: 0;
+                transform: translateY(16px);
             }
             to {
-                text-shadow: 0 0 30px #ffffff, 0 0 40px #cccccc;
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
+        /* Mobile */
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
+            .menu-container {
+                padding: 40px 20px 60px;
+            }
+
+            .header {
+                margin-bottom: 40px;
             }
 
             .games-grid {
                 grid-template-columns: 1fr;
-                gap: 20px;
+                gap: 12px;
             }
 
             .game-card {
-                padding: 20px;
+                padding: 22px 22px 20px;
             }
+
+            .status-bar {
+                gap: 16px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Selection color */
+        ::selection {
+            background: var(--green);
+            color: var(--bg-deep);
         }
     </style>
 </head>
 <body>
-    <button class="back-button" onclick="goBack()">← Back to Menu</button>
+    <div class="bg-grid"></div>
+
+    <button class="back-button" onclick="goBack()">&#8592; BACK</button>
 
     <div id="menu" class="menu-container">
         <div class="header">
-            <h1>FiveM Minigames</h1>
-            <p>Hacking minigame collection</p>
+            <div class="header-label">System active</div>
+            <h1>FiveM <span>Minigames</span></h1>
+            <p class="header-desc">A collection of hacking minigames. Choose a challenge and test your skills.</p>
+            <div class="header-line"></div>
+        </div>
+
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-dot"></div>
+                <span>7 MODULES LOADED</span>
+            </div>
+            <div class="status-item">
+                <span>ALL SYSTEMS NOMINAL</span>
+            </div>
         </div>
 
         <div class="games-grid">
             <div class="game-card" onclick="playGame('data_miner_game')">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                    </div>
+                    <div class="card-arrow">&#8594;</div>
+                </div>
                 <div class="game-title">Data Miner</div>
-                <button class="play-button">Play Now</button>
+                <div class="game-desc">Minesweeper-style grid hacking. Reveal safe tiles, flag the hazards.</div>
+                <div class="card-tag">Grid / Logic</div>
             </div>
 
             <div class="game-card" onclick="playGame('grid_memory_game')">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
+                    </div>
+                    <div class="card-arrow">&#8594;</div>
+                </div>
                 <div class="game-title">Grid Memory</div>
-                <button class="play-button">Play Now</button>
+                <div class="game-desc">Memorize and repeat the flashing sequence on the grid.</div>
+                <div class="card-tag">Memory / Pattern</div>
             </div>
 
             <div class="game-card" onclick="playGame('letter_sequence_game')">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                    </div>
+                    <div class="card-arrow">&#8594;</div>
+                </div>
                 <div class="game-title">Letter Sequence</div>
-                <button class="play-button">Play Now</button>
+                <div class="game-desc">Press QWER ASDF keys in the displayed order before time runs out.</div>
+                <div class="card-tag">Speed / Keyboard</div>
             </div>
 
             <div class="game-card" onclick="playGame('pair_matching_game')">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="8" height="12" rx="1"/><rect x="14" y="4" width="8" height="12" rx="1"/><path d="M6 8v4M18 8v4"/></svg>
+                    </div>
+                    <div class="card-arrow">&#8594;</div>
+                </div>
                 <div class="game-title">Pair Matching</div>
-                <button class="play-button">Play Now</button>
+                <div class="game-desc">Find all matching card pairs within the time limit.</div>
+                <div class="card-tag">Memory / Speed</div>
             </div>
 
             <div class="game-card" onclick="playGame('typeracer_game')">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    </div>
+                    <div class="card-arrow">&#8594;</div>
+                </div>
                 <div class="game-title">TypeRacer</div>
-                <button class="play-button">Play Now</button>
+                <div class="game-desc">Type the displayed words correctly before each one expires.</div>
+                <div class="card-tag">Typing / Speed</div>
             </div>
 
             <div class="game-card" onclick="playGame('word_memory_game')">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    </div>
+                    <div class="card-arrow">&#8594;</div>
+                </div>
                 <div class="game-title">Word Memory</div>
-                <button class="play-button">Play Now</button>
+                <div class="game-desc">Words appear one by one. Remember which ones you've already seen.</div>
+                <div class="card-tag">Memory / Focus</div>
             </div>
 
             <div class="game-card" onclick="playGame('thermite_game')">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 2c1 3 3 4.5 3 8a3 3 0 1 1-6 0c0-3.5 2-5 3-8z"/><path d="M8 21h8"/><path d="M12 15v6"/></svg>
+                    </div>
+                    <div class="card-arrow">&#8594;</div>
+                </div>
                 <div class="game-title">Thermite</div>
-                <button class="play-button">Play Now</button>
+                <div class="game-desc">Match the pattern before it disappears. Fast reflexes required.</div>
+                <div class="card-tag">Reflex / Pattern</div>
             </div>
+        </div>
+
+        <div class="footer">
+            <span>7 minigames available</span>
+            <a href="https://github.com/MrKnights1/fivem-minigames" target="_blank" rel="noopener noreferrer">github.com/MrKnights1/fivem-minigames</a>
         </div>
     </div>
 
@@ -260,7 +558,7 @@
             backButton.style.display = 'block';
 
             // Change page title
-            document.title = `BLS sim - ${getGameDisplayName(gameName)}`;
+            document.title = `FiveM Minigames - ${getGameDisplayName(gameName)}`;
         }
 
         function goBack() {
