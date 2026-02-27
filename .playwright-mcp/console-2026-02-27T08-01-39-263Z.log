@@ -1,5 +1,0 @@
-[      39ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:8082/favicon.ico:0
-[  294600ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:8082/games/vise_pair_matching_game/sounds/win.wav:0
-[  294601ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:8082/games/vise_pair_matching_game/sounds/lose.wav:0
-[  294602ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:8082/games/vise_pair_matching_game/sounds/start.wav:0
-[  294603ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:8082/games/vise_pair_matching_game/sounds/pairMatch.mp3:0
