@@ -374,6 +374,7 @@
         .game-card:nth-child(5) { animation-delay: 0.32s; }
         .game-card:nth-child(6) { animation-delay: 0.38s; }
         .game-card:nth-child(7) { animation-delay: 0.44s; }
+        .game-card:nth-child(8) { animation-delay: 0.50s; }
 
         @keyframes cardIn {
             from {
@@ -439,7 +440,7 @@
         <div class="status-bar">
             <div class="status-item">
                 <div class="status-dot"></div>
-                <span>7 MODULES LOADED</span>
+                <span>8 MODULES LOADED</span>
             </div>
             <div class="status-item">
                 <span>ALL SYSTEMS NOMINAL</span>
@@ -530,10 +531,22 @@
                 <div class="game-desc">Match the pattern before it disappears. Fast reflexes required.</div>
                 <div class="card-tag">Reflex / Pattern</div>
             </div>
+
+            <div class="game-card" onclick="playGame('hacking_device_game')">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><path d="M7 8h2M11 8h2M15 8h2M7 12h2M11 12h2"/></svg>
+                    </div>
+                    <div class="card-arrow">&#8594;</div>
+                </div>
+                <div class="game-title">Hacking Device</div>
+                <div class="game-desc">Find the target codes in a shuffling grid. Navigate with WASD, select with Enter.</div>
+                <div class="card-tag">Visual / Keyboard</div>
+            </div>
         </div>
 
         <div class="footer">
-            <span>7 minigames available</span>
+            <span>8 minigames available</span>
             <a href="https://github.com/MrKnights1/fivem-minigames" target="_blank" rel="noopener noreferrer">github.com/MrKnights1/fivem-minigames</a>
         </div>
     </div>
@@ -587,7 +600,8 @@
                 'pair_matching_game': 'Pair Matching',
                 'typeracer_game': 'TypeRacer',
                 'word_memory_game': 'Word Memory',
-                'thermite_game': 'Thermite'
+                'thermite_game': 'Thermite',
+                'hacking_device_game': 'Hacking Device'
             };
             return names[gameName] || gameName;
         }
