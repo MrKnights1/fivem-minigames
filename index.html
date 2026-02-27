@@ -202,37 +202,37 @@
         </div>
 
         <div class="games-grid">
-            <div class="game-card" onclick="playGame('vise_data_miner_game')">
+            <div class="game-card" onclick="playGame('data_miner_game')">
                 <div class="game-title">---</div>
                 <button class="play-button">Play Now</button>
             </div>
 
-            <div class="game-card" onclick="playGame('vise_grid_memory_game')">
+            <div class="game-card" onclick="playGame('grid_memory_game')">
                 <div class="game-title">Fleeca?</div>
                 <button class="play-button">Play Now</button>
             </div>
 
-            <div class="game-card" onclick="playGame('vise_letter_sequence_game')">
+            <div class="game-card" onclick="playGame('letter_sequence_game')">
                 <div class="game-title">Rahaauto?</div>
                 <button class="play-button">Play Now</button>
             </div>
 
-            <div class="game-card" onclick="playGame('vise_pair_matching_game')">
+            <div class="game-card" onclick="playGame('pair_matching_game')">
                 <div class="game-title">ATM Hack</div>
                 <button class="play-button">Play Now</button>
             </div>
 
-            <div class="game-card" onclick="playGame('vise_typeracer_game')">
+            <div class="game-card" onclick="playGame('typeracer_game')">
                 <div class="game-title">Krüpto</div>
                 <button class="play-button">Play Now</button>
             </div>
 
-            <div class="game-card" onclick="playGame('vise_word_memory_game')">
+            <div class="game-card" onclick="playGame('word_memory_game')">
                 <div class="game-title">---</div>
                 <button class="play-button">Play Now</button>
             </div>
 
-            <div class="game-card" onclick="playGame('vise_thermite_game')">
+            <div class="game-card" onclick="playGame('thermite_game')">
                 <div class="game-title">Thermite</div>
                 <button class="play-button">Play Now</button>
             </div>
@@ -282,13 +282,13 @@
 
         function getGameDisplayName(gameName) {
             const names = {
-                'vise_data_miner_game': '---',
-                'vise_grid_memory_game': '---',
-                'vise_letter_sequence_game': '---',
-                'vise_pair_matching_game': 'ATM Hack',
-                'vise_typeracer_game': 'Krüpto',
-                'vise_word_memory_game': '---',
-                'vise_thermite_game': 'Thermite'
+                'data_miner_game': '---',
+                'grid_memory_game': '---',
+                'letter_sequence_game': '---',
+                'pair_matching_game': 'ATM Hack',
+                'typeracer_game': 'Krüpto',
+                'word_memory_game': '---',
+                'thermite_game': 'Thermite'
             };
             return names[gameName] || gameName;
         }
