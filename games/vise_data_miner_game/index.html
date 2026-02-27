@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <title>VISE DATA MINER</title>
+    <script src="../shared/howler.js"></script>
+    <script src="../shared/nui-utils.js"></script>
+    <script src="./src/game.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BjO5NIdx.css">
+  </head>
+  <body>
+    <div id="app" class="font-mono bg-gray-900 text-main-400 rounded-md relative hidden opacity-0 transition-opacity duration-1000 ease-in-out w-auto max-w-[90vw] px-4 pb-4"> <div class="p-4 flex flex-col">
+        <div class="flex justify-between items-center pb-3 border-b border-b-top-bar-border">
+            <div class="flex items-center gap-2">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 -mb-0.5">
+                        <polyline points="4 17 10 11 4 5"></polyline>
+                        <line x1="12" x2="20" y1="19" y2="19"></line>
+                    </svg>
+                </div>
+                <div class="text-[1.2rem] font-bold tracking-wider relative">
+                    <div class="absolute inset-0 blur-sm opacity-70 uppercase gameTitleText">Data Miner</div>
+                    <span class="relative z-10 uppercase gameTitleText">Data Miner</span>
+                </div>
+            </div>
+            <div class="flex gap-4">
+                <div class="flex items-center gap-0.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4">
+                        <path d="M16.5 7.5h-9v9h9v-9Z" />
+                        <path fill-rule="evenodd" d="M8.25 2.25A.75.75 0 0 1 9 3v.75h2.25V3a.75.75 0 0 1 1.5 0v.75H15V3a.75.75 0 0 1 1.5 0v.75h.75a3 3 0 0 1 3 3v.75H21A.75.75 0 0 1 21 9h-.75v2.25H21a.75.75 0 0 1 0 1.5h-.75V15H21a.75.75 0 0 1 0 1.5h-.75v.75a3 3 0 0 1-3 3h-.75V21a.75.75 0 0 1-1.5 0v-.75h-2.25V21a.75.75 0 0 1-1.5 0v-.75H9V21a.75.75 0 0 1-1.5 0v-.75h-.75a3 3 0 0 1-3-3v-.75H3A.75.75 0 0 1 3 15h.75v-2.25H3a.75.75 0 0 1 0-1.5h.75V9H3a.75.75 0 0 1 0-1.5h.75v-.75a3 3 0 0 1 3-3h.75V3a.75.75 0 0 1 .75-.75ZM6 6.75A.75.75 0 0 1 6.75 6h10.5a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V6.75Z" clip-rule="evenodd" />
+                    </svg>
+                    <p class="tracking-tighter text-xs font-mono">CPU: <span id="cpuNumber">--</span>%</p>
+                </div>
+                <div class="flex items-center gap-0.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4">
+                        <path d="M21 6.375c0 2.692-4.03 4.875-9 4.875S3 9.067 3 6.375 7.03 1.5 12 1.5s9 2.183 9 4.875Z" />
+                        <path d="M12 12.75c2.685 0 5.19-.586 7.078-1.609a8.283 8.283 0 0 0 1.897-1.384c.016.121.025.244.025.368C21 12.817 16.97 15 12 15s-9-2.183-9-4.875c0-.124.009-.247.025-.368a8.285 8.285 0 0 0 1.897 1.384C6.809 12.164 9.315 12.75 12 12.75Z" />
+                        <path d="M12 16.5c2.685 0 5.19-.586 7.078-1.609a8.282 8.282 0 0 0 1.897-1.384c.016.121.025.244.025.368 0 2.692-4.03 4.875-9 4.875s-9-2.183-9-4.875c0-.124.009-.247.025-.368a8.284 8.284 0 0 0 1.897 1.384C6.809 15.914 9.315 16.5 12 16.5Z" />
+                        <path d="M12 20.25c2.685 0 5.19-.586 7.078-1.609a8.282 8.282 0 0 0 1.897-1.384c.016.121.025.244.025.368 0 2.692-4.03 4.875-9 4.875s-9-2.183-9-4.875c0-.124.009-.247.025-.368a8.284 8.284 0 0 0 1.897 1.384C6.809 19.664 9.315 20.25 12 20.25Z" />
+                    </svg>
+                    <p class="tracking-tighter text-xs font-mono">MEM: <span id="memoryNumber">--</span>%</p>
+                </div>
+                <div id="signalBars" class="text-sm font-bold flex items-center justify-end gap-0.5">
+                    <div class="h-3 w-1 bg-main-900"></div>
+                    <div class="h-3 w-1 bg-main-900"></div>
+                    <div class="h-3 w-1 bg-main-900"></div>
+                    <div class="h-3 w-1 bg-main-900"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-center items-center p-2 mt-3 rounded mx-1 gap-4">
+            <div class="flex items-center gap-1 text-yellow-400 flex-shrink-0 bg-gray-800 rounded-md p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-14">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                </svg>
+                <div class="relative text-6xl font-bold">
+                    <div id="hazardCounterTwo" class="absolute inset-0 blur-sm opacity-70 uppercase">--</div>
+                    <span id="hazardCounter" class="relative z-50">--</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="gameTimeoutContainer" class="h-1.5 flex-grow relative rounded-xl bg-gray-800 overflow-hidden mx-1 my-3">
+            <div id="gameTimeoutProgressBar" class="absolute h-full rounded-xl bg-main-600" style="width: 100%;"></div>
+        </div>
+
+        <div class="game flex items-center justify-center p-1">
+            <div id="gridContainer" class="grid border border-gray-700">
+
+            </div>
+        </div>
+
+        </div> <div id="winOverlay" class="p-4 top-0 left-0 absolute w-full h-full bg-[#000000CC] rounded-md flex items-center justify-center hidden opacity-0 transition-opacity duration-500 ease-in-out z-50">
+            <div class="bg-gray-900 flex flex-col items-start justify-start w-full rounded">
+                <div class="h-12 w-full bg-gray-800 rounded-t items-center px-4 flex justify-between">
+                    <div class="flex items-center gap-1.5">
+                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7"><path stroke-linecap="round" stroke-linejoin="round" d="m6.75 7.5 3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0 0 21 18V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v12a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>
+                        <div class="text-gray-400 text-xs terminalTitleText">secure-shell@data-miner:~</div>
+                    </div>
+                    <div class="flex justify-end gap-1.5"><div class="bg-green-600 size-3 rounded-full"></div><div class="bg-yellow-400 size-3 rounded-full"></div><div class="bg-red-600 size-3 rounded-full"></div></div>
+                </div>
+                <div class="flex items-center justify-center flex-col w-full h-full py-4">
+                    <div class="relative">
+                        <div class="absolute inset-0 blur-sm opacity-70"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-18"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" /></svg></div>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-18 relative z-50"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" /></svg>
+                    </div>
+                    <div class="text-2xl font-bold tracking-widest mb-2 relative">
+                        <div class="absolute inset-0 blur-sm opacity-70 uppercase left-right-wiggle accessGrantedText">ACCESS GRANTED</div>
+                        <span class="relative z-50 left-right-wiggle accessGrantedText">ACCESS GRANTED</span>
+                    </div>
+                    <div class="bg-gray-950 border border-top-bar-border rounded p-3">
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <div class="text-gray-500" id="sessionText">SESSION: </div>
+                            <div class="text-main-400">0x8F3A92C1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="lossOverlay" class="p-4 top-0 left-0 absolute w-full h-full bg-[#000000CC] rounded-md flex items-center justify-center hidden opacity-0 transition-opacity duration-500 ease-in-out z-50">
+             <div class="bg-gray-900 flex flex-col items-start justify-start w-full rounded">
+                <div class="h-12 w-full bg-gray-800 rounded-t items-center px-4 flex justify-between">
+                    <div class="flex items-center gap-1.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7 text-red-500"><path stroke-linecap="round" stroke-linejoin="round" d="m6.75 7.5 3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0 0 21 18V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v12a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>
+                        <div class="text-gray-400 text-xs terminalTitleText">secure-shell@data-miner:~</div>
+                    </div>
+                   <div class="flex justify-end gap-1.5"><div class="bg-green-600 size-3 rounded-full"></div><div class="bg-yellow-400 size-3 rounded-full"></div><div class="bg-red-600 size-3 rounded-full"></div></div>
+                </div>
+                <div class="flex items-center justify-center flex-col w-full h-full py-4 px-12">
+                    <div class="relative">
+                        <div class="absolute inset-0 text-red-500 blur-sm opacity-70"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-18 text-red-500"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0-10.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.75c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.75h-.152c-3.196 0-6.1-1.25-8.25-3.286Zm0 13.036h.008v.008H12v-.008Z" /></svg></div>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-18 text-red-500 relative z-50"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0-10.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.75c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.75h-.152c-3.196 0-6.1-1.25-8.25-3.286Zm0 13.036h.008v.008H12v-.008Z" /></svg>
+                    </div>
+                    <div class="text-red-500 text-2xl font-bold tracking-widest mb-2 relative">
+                        <div class="absolute inset-0 blur-sm opacity-70 uppercase left-right-wiggle accessDeniedText">ACCESS DENIED</div>
+                        <span class="relative z-50 left-right-wiggle accessDeniedText">ACCESS DENIED</span>
+                    </div>
+                    <div class="flex items-center justify-center mt-2">
+                        <p class="text-sm text-gray-500"><span class="text-red-500" id="errorText">ERROR:</span> <span id="authFailedText">Authentication failed.</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="debug" class="absolute bottom-4 right-4 flex flex-col gap-2 border border-gray-300 bg-gray-100 rounded-md px-6 py-4 shadow-md hidden">
+        <h3 class="text-center font-semibold text-gray-700 mb-2">Debug Controls</h3>
+        <div class="relative">
+            <label for="gridWidth" class="absolute -top-2 left-2 inline-block rounded-lg bg-gray-100 px-1 text-xs font-medium text-gray-600">Width</label>
+            <input type="number" name="gridWidth" id="gridWidth" class="block w-full rounded-md border-0 bg-white px-3 py-1.5 text-base text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="9" value="9" min="5" max="30">
+        </div>
+         <div class="relative">
+            <label for="gridHeight" class="absolute -top-2 left-2 inline-block rounded-lg bg-gray-100 px-1 text-xs font-medium text-gray-600">Height</label>
+            <input type="number" name="gridHeight" id="gridHeight" class="block w-full rounded-md border-0 bg-white px-3 py-1.5 text-base text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="9" value="9" min="5" max="30">
+        </div>
+         <div class="relative">
+            <label for="hazardCount" class="absolute -top-2 left-2 inline-block rounded-lg bg-gray-100 px-1 text-xs font-medium text-gray-600">Hazards</label>
+            <input type="number" name="hazardCount" id="hazardCount" class="block w-full rounded-md border-0 bg-white px-3 py-1.5 text-base text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="10" value="10" min="1">
+        </div>
+        <div class="relative">
+            <label for="gameTimeout" class="absolute -top-2 left-2 inline-block rounded-lg bg-gray-100 px-1 text-xs font-medium text-gray-600">Timeout (s, 0=off)</label>
+            <input type="number" name="gameTimeout" id="gameTimeout" class="block w-full rounded-md border-0 bg-white px-3 py-1.5 text-base text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="0" value="0" min="0">
+        </div>
+        <button id="startGame" type="button" class="mt-2 rounded-sm bg-indigo-500 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Start Game</button>
+    </div>
+
+  </body>
+</html>

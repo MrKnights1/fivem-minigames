@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLS sim</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px #ffffff;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            letter-spacing: 1px;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .game-card {
+            background: #1a1a1a;
+            border: 2px solid #333333;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .game-card:hover::before {
+            left: 100%;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1);
+            border-color: #666666;
+        }
+
+        .game-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .game-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .game-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .play-button {
+            background: #333333;
+            border: 2px solid #666666;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-family: inherit;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .play-button:hover {
+            transform: scale(1.05);
+            background: #666666;
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #1a1a1a;
+            border: 2px solid #666666;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-family: inherit;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .back-button:hover {
+            background: #333333;
+            color: white;
+        }
+
+        .game-frame {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 1000;
+        }
+
+        .game-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 20px #ffffff;
+            }
+            to {
+                text-shadow: 0 0 30px #ffffff, 0 0 40px #cccccc;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .games-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .game-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="goBack()">← Back to Menu</button>
+
+    <div id="menu" class="menu-container">
+        <div class="header">
+            <h1>BLS sim</h1>
+            <p>eeeeee wip</p>
+        </div>
+
+        <div class="games-grid">
+            <div class="game-card" onclick="playGame('vise_data_miner_game')">
+                <div class="game-title">---</div>
+                <button class="play-button">Play Now</button>
+            </div>
+
+            <div class="game-card" onclick="playGame('vise_grid_memory_game')">
+                <div class="game-title">Fleeca?</div>
+                <button class="play-button">Play Now</button>
+            </div>
+
+            <div class="game-card" onclick="playGame('vise_letter_sequence_game')">
+                <div class="game-title">Rahaauto?</div>
+                <button class="play-button">Play Now</button>
+            </div>
+
+            <div class="game-card" onclick="playGame('vise_pair_matching_game')">
+                <div class="game-title">ATM Hack</div>
+                <button class="play-button">Play Now</button>
+            </div>
+
+            <div class="game-card" onclick="playGame('vise_typeracer_game')">
+                <div class="game-title">Krüpto</div>
+                <button class="play-button">Play Now</button>
+            </div>
+
+            <div class="game-card" onclick="playGame('vise_word_memory_game')">
+                <div class="game-title">---</div>
+                <button class="play-button">Play Now</button>
+            </div>
+
+            <div class="game-card" onclick="playGame('vise_thermite_game')">
+                <div class="game-title">Thermite</div>
+                <button class="play-button">Play Now</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="gameFrame" class="game-frame">
+        <iframe id="gameIframe" class="game-iframe" src=""></iframe>
+    </div>
+
+    <script>
+        function playGame(gameName) {
+            const menu = document.getElementById('menu');
+            const gameFrame = document.getElementById('gameFrame');
+            const gameIframe = document.getElementById('gameIframe');
+            const backButton = document.querySelector('.back-button');
+
+            // Set the iframe source to the game's index.html
+            gameIframe.src = `games/${gameName}/index.html`;
+
+            // Hide menu and show game
+            menu.style.display = 'none';
+            gameFrame.style.display = 'block';
+            backButton.style.display = 'block';
+
+            // Change page title
+            document.title = `BLS sim - ${getGameDisplayName(gameName)}`;
+        }
+
+        function goBack() {
+            const menu = document.getElementById('menu');
+            const gameFrame = document.getElementById('gameFrame');
+            const gameIframe = document.getElementById('gameIframe');
+            const backButton = document.querySelector('.back-button');
+
+            // Clear iframe source
+            gameIframe.src = '';
+
+            // Show menu and hide game
+            menu.style.display = 'block';
+            gameFrame.style.display = 'none';
+            backButton.style.display = 'none';
+
+            // Reset page title
+            document.title = 'BLS sim';
+        }
+
+        function getGameDisplayName(gameName) {
+            const names = {
+                'vise_data_miner_game': '---',
+                'vise_grid_memory_game': '---',
+                'vise_letter_sequence_game': '---',
+                'vise_pair_matching_game': 'ATM Hack',
+                'vise_typeracer_game': 'Krüpto',
+                'vise_word_memory_game': '---',
+                'vise_thermite_game': 'Thermite'
+            };
+            return names[gameName] || gameName;
+        }
+
+        // Handle escape key to go back
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const gameFrame = document.getElementById('gameFrame');
+                if (gameFrame.style.display === 'block') {
+                    goBack();
+                }
+            }
+        });
+
+        // Prevent right-click context menu on game cards for better UX
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+            });
+        });
+    </script>
+</body>
+</html>

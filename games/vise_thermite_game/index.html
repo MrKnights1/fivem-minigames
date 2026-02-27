@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Thermite Minigame</title>
+    <meta name="description" content="Play the Thermite Minigame to test your memory.">
+    <meta name="viewport" content="width=device-width, initial-scale=0.4">
+    <link rel="icon" type="image/png" href="favicon.ico" sizes="32x32" />
+    <style>
+        body{
+            background-color: #15181d;
+            font-family: sans-serif;
+        }
+
+        .title{
+            text-align: center;
+            color: white;
+        }
+        .description{
+            text-align: center;
+            color: gray;
+        }
+
+        /**
+         MINIGAME SQUARES
+         */
+
+        .streaks {
+            display: block;
+            margin: 40px auto;
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: white;
+            width: -moz-fit-content;
+            width: fit-content;
+            background-color: #028000;
+            padding: 12px;
+            border-radius: 18px;
+        }
+        .best_time,
+        .time {
+            display: inline-block;
+            width: 100px;
+        }
+        .streaks .fa {
+            padding: 0 10px;
+        }
+        .options{
+            font-weight: bold;
+            text-align: center;
+            margin: 0 auto 10px;
+        }
+        .option{
+            display: inline-block;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            width: -moz-fit-content;
+            width: fit-content;
+            height: 20px;
+            background-color: #20282e;
+            padding: 10px 20px;
+            margin: 0 auto 10px;
+            border-radius: 6px;
+        }
+        .option.grid input,
+        .option.speed input{
+            vertical-align: text-top;
+        }
+        .speed_value{
+            display: inline-block;
+            width: 18px;
+            text-align: right;
+        }
+        .grid_value{
+            display: inline-block;
+            width: 40px;
+            text-align: center;
+        }
+        .minigame{
+            margin: 0 auto 20px;
+            width: 540px;
+            min-width: 540px;
+            max-width: 540px;
+            height: 540px;
+            min-height: 540px;
+            max-height: 540px;
+            background-color: #232832;
+        }
+        .splash{
+            display: inline-block;
+            width: 100%;
+            margin: 220px auto;
+            text-align: center;
+            color: white;
+            font-size: 16px;
+        }
+        .splash .hacker{
+            font-size: 65px;
+            margin-bottom: 30px;
+        }
+        .groups{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            user-select: none;
+        }
+        .group{
+            width: 74px;
+            height: 74px;
+            border: 8px #232832 solid;
+            background-color: #34475C;
+        }
+        .jewelry .group{
+            width: 92px;
+            height: 92px;
+        }
+        .proper{
+            background-color: #006600;
+        }
+        .good{
+            background-color: #CCCCCC;
+        }
+        .bad{
+            background-color: #F00F18;
+        }
+        .hidden {
+            display: none;
+        }
+        .restart{
+            text-align: center;
+        }
+        .btn_again {
+            padding: 6px 15px;
+            font-weight: bold;
+        }
+        .credits{
+            text-align: center;
+            color: gray;
+            margin-top: 40px;
+        }
+        .credits a{
+            color: #ccc;
+        }
+        .credits b{
+            color: white;
+        }
+        .credits .fas{
+            color: red;
+        }
+        .credits .donate{
+            margin: 20px 0;
+        }
+        .credits .coin{
+            font-weight: bold;
+            color: white;
+        }
+        .credits .wallet{
+            font-family: monospace;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">Thermite Minigame</h1>
+    <h3 class="description">
+        Play the Thermite Minigame to test your memory.
+        <br><br>
+        <u>How to play:</u> Remember the light square positions to replicate it later when they hide.
+    </h3>
+    <div class="streaks">
+        STREAK: <span class="streak">0</span> ⚡ MAX STREAK: <span class="max_streak">0</span>
+        <br>TIME: <span class="time">0.000</span> ⏱ BEST TIME: <span class="best_time">0.000</span>
+    </div>
+    <div class="options">
+        <div class="option speed">
+            <label for="speed">Speed:</label>
+            <input id="speed" type="range" value="6" min="4" max="30" autocomplete="off">
+            <div class="speed_value">6s</div>
+        </div>
+        <div class="option grid">
+            <label for="grid">Grid:</label>
+            <input id="grid" type="range" value="7" min="5" max="10" autocomplete="off">
+            <div class="grid_value">7x7</div>
+        </div>
+    </div>
+    <div class="minigame">
+        <div class="splash"><div class="fa hacker">⚡</div>Remote Sequencing Required</div>
+        <div class="groups hidden"></div>
+    </div>
+    <div class="restart"><button class="btn_again">AGAIN!</button></div>
+
+    <script>
+        let timer_start, timer_game, timer_finish, timer_time, good_positions, wrong, right, speed, timerStart, positions;
+        let game_started = false;
+        let streak = 0;
+        let max_streak = 0;
+        let best_time = 99.999;
+
+        let mode = 7;
+        let mode_data = {};
+        mode_data[5] = [10, '92px'];
+        mode_data[6] = [14, '74px'];
+        mode_data[7] = [18, '61px'];
+        mode_data[8] = [20, '51px'];
+        mode_data[9] = [24, '44px'];
+        mode_data[10] = [28, '38px'];
+
+        // Get max streak from localStorage
+        const stored_max_streak = localStorage.getItem('max-streak_thermite');
+        if(stored_max_streak !== null){
+            max_streak = parseInt(stored_max_streak);
+        }
+        // Get best time from localStorage
+        const stored_best_time = localStorage.getItem('best-time_thermite');
+        if(stored_best_time !== null){
+            best_time = parseFloat(stored_best_time);
+        }
+
+        const sleep = (ms, fn) => {return setTimeout(fn, ms)};
+
+        const range = (start, end, length = end - start + 1) => {
+            return Array.from({length}, (_, i) => start + i)
+        }
+
+        const shuffle = (arr) => {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+
+        // Options
+        document.querySelector('#speed').addEventListener('input', function(ev){
+            document.querySelector('.speed_value').innerHTML = ev.target.value + 's';
+            streak = 0;
+            reset();
+        });
+        document.querySelector('#grid').addEventListener('input', function(ev){
+            document.querySelector('.grid_value').innerHTML = ev.target.value + 'x' + ev.target.value;
+            mode = ev.target.value;
+            streak = 0;
+            reset();
+        });
+
+        // Resets
+        document.querySelector('.btn_again').addEventListener('click', function(){
+            streak = 0;
+            reset();
+        });
+
+        function listener(ev){
+            if(!game_started) return;
+
+            if( good_positions.indexOf( parseInt(ev.target.dataset.position) ) === -1 ){
+                wrong++;
+                ev.target.classList.add('bad');
+            }else{
+                right++;
+                ev.target.classList.add('good');
+            }
+
+            ev.target.removeEventListener('mousedown', listener);
+
+            check();
+        }
+
+        function addListeners(){
+            document.querySelectorAll('.group').forEach(el => {
+                el.addEventListener('mousedown', listener);
+            });
+        }
+
+        function check(){
+            if(wrong === 3){
+                resetTimer();
+                game_started = false;
+                streak = 0;
+
+                let blocks = document.querySelectorAll('.group');
+                good_positions.forEach( pos => {
+                    blocks[pos].classList.add('proper');
+                });
+                return;
+            }
+            if(right === mode_data[mode][0]){
+                stopTimer();
+                streak++;
+                if(streak > max_streak){
+                    max_streak = streak;
+                    localStorage.setItem('max-streak_thermite', max_streak);
+                }
+                let time = document.querySelector('.streaks .time').innerHTML;
+                if(parseFloat(time) < best_time){
+                    best_time = parseFloat(time);
+                    localStorage.setItem('best-time_thermite', best_time);
+                }
+                reset();
+            }
+        }
+
+        function reset(){
+            game_started = false;
+
+            resetTimer();
+            clearTimeout(timer_start);
+            clearTimeout(timer_game);
+            clearTimeout(timer_finish);
+
+            document.querySelector('.splash').classList.remove('hidden');
+            document.querySelector('.groups').classList.add('hidden');
+
+            document.querySelectorAll('.group').forEach(el => { el.remove(); });
+
+            start();
+        }
+
+        function start(){
+            wrong = 0;
+            right = 0;
+
+            positions = range(0, Math.pow(mode, 2) - 1 );
+            shuffle(positions);
+            good_positions = positions.slice(0, mode_data[mode][0]);
+
+            let div = document.createElement('div');
+            div.classList.add('group');
+            div.style.width = mode_data[mode][1];
+            div.style.height = mode_data[mode][1];
+            const groups = document.querySelector('.groups');
+            for(let i=0; i < positions.length; i++){
+                let group = div.cloneNode();
+                group.dataset.position = i.toString();
+                groups.appendChild(group);
+            }
+
+            addListeners();
+
+            document.querySelector('.streak').innerHTML = streak;
+            document.querySelector('.max_streak').innerHTML = max_streak;
+            document.querySelector('.best_time').innerHTML = best_time;
+
+            timer_start = sleep(2000, function(){
+                document.querySelector('.splash').classList.add('hidden');
+                document.querySelector('.groups').classList.remove('hidden');
+
+                let blocks = document.querySelectorAll('.group');
+                good_positions.forEach( pos => {
+                    blocks[pos].classList.add('good');
+                });
+
+                timer_game = sleep(4000, function(){
+                    document.querySelectorAll('.group.good').forEach(el => { el.classList.remove('good')});
+                    game_started = true;
+
+                    startTimer();
+                    speed = document.querySelector('#speed').value;
+                    timer_finish = sleep((speed * 1000), function(){
+                        game_started = false;
+                        wrong = 3;
+                        check();
+                    });
+                });
+            });
+        }
+
+        function startTimer(){
+            timerStart = new Date();
+            timer_time = setInterval(timer,1);
+        }
+        function timer(){
+            let timerNow = new Date();
+            let timerDiff = new Date();
+            timerDiff.setTime(timerNow - timerStart);
+            let ms = timerDiff.getMilliseconds();
+            let sec = timerDiff.getSeconds();
+            if (ms < 10) {ms = "00"+ms;}else if (ms < 100) {ms = "0"+ms;}
+            document.querySelector('.streaks .time').innerHTML = sec+"."+ms;
+        }
+        function stopTimer(){
+            clearInterval(timer_time);
+        }
+        function resetTimer(){
+            clearInterval(timer_time);
+            document.querySelector('.streaks .time').innerHTML = '0.000';
+        }
+
+        start();
+    </script>
+</body>
+</html>
