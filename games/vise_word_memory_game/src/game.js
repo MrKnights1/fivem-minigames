@@ -529,9 +529,11 @@ class WordMemoryGame {
     this.wordTimeoutDuration = Math.max(1000, (config.wordTimeout || 5) * 1000);
 
     const poolSize = Math.max(2, Math.ceil(this.targetScore / 2));
-    const shuffledWords = [...this.wordPool].sort(function () {
-      return Math.random() - 0.5;
-    });
+    const shuffledWords = [...this.wordPool];
+    for (let i = shuffledWords.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledWords[i], shuffledWords[j]] = [shuffledWords[j], shuffledWords[i]];
+    }
 
     this.gameWordPool = [...new Set(shuffledWords)].slice(0, poolSize);
 
@@ -828,28 +830,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
       Array.from(document.getElementsByClassName("gameTitleText")).forEach(
         function (element) {
-          element.innerHTML = texts.GAME_TITLE;
+          element.textContent = texts.GAME_TITLE;
         }
       );
       Array.from(document.getElementsByClassName("terminalTitleText")).forEach(
         function (element) {
-          element.innerHTML = texts.TERMINAL_TITLE;
+          element.textContent = texts.TERMINAL_TITLE;
         }
       );
       Array.from(document.getElementsByClassName("accessGrantedText")).forEach(
         function (element) {
-          element.innerHTML = texts.END_SCREEN_ACCESS_GRANTED;
+          element.textContent = texts.END_SCREEN_ACCESS_GRANTED;
         }
       );
       Array.from(document.getElementsByClassName("accessDeniedText")).forEach(
         function (element) {
-          element.innerHTML = texts.END_SCREEN_ACCESS_DENIED;
+          element.textContent = texts.END_SCREEN_ACCESS_DENIED;
         }
       );
-      document.getElementById("newButtonText").innerHTML =
+      document.getElementById("newButtonText").textContent =
         texts.GAME_NEW_BUTTON;
-      document.getElementById("seenButton").innerHTML = texts.GAME_SEEN_BUTTON;
-      document.getElementById("gameStatusText").innerHTML = texts.GAME_STATUS;
+      document.getElementById("seenButton").textContent = texts.GAME_SEEN_BUTTON;
+      document.getElementById("gameStatusText").textContent = texts.GAME_STATUS;
     }
   });
 });

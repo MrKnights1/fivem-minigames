@@ -816,21 +816,21 @@ document.addEventListener("DOMContentLoaded", function () {
       const texts = response.texts;
 
       Array.from(document.getElementsByClassName("gameTitleText")).forEach((element) => {
-        element.innerHTML = texts.GAME_TITLE;
+        element.textContent = texts.GAME_TITLE;
       });
       Array.from(document.getElementsByClassName("terminalTitleText")).forEach((element) => {
-        element.innerHTML = texts.TERMINAL_TITLE;
+        element.textContent = texts.TERMINAL_TITLE;
       });
       Array.from(document.getElementsByClassName("accessGrantedText")).forEach((element) => {
-        element.innerHTML = texts.END_SCREEN_ACCESS_GRANTED;
+        element.textContent = texts.END_SCREEN_ACCESS_GRANTED;
       });
       Array.from(document.getElementsByClassName("accessDeniedText")).forEach((element) => {
-        element.innerHTML = texts.END_SCREEN_ACCESS_DENIED;
+        element.textContent = texts.END_SCREEN_ACCESS_DENIED;
       });
-      document.getElementById("sessionText").innerHTML = texts.END_SCREEN_SESSION;
-      document.getElementById("errorText").innerHTML = texts.END_SCREEN_ERROR;
-      document.getElementById("authFailedText").innerHTML = texts.END_SCREEN_AUTHENTICATION_FAILED;
-      document.getElementById("awaitingInputText").innerHTML = texts.GAME_AWAITING_INPUT;
+      document.getElementById("sessionText").textContent = texts.END_SCREEN_SESSION;
+      document.getElementById("errorText").textContent = texts.END_SCREEN_ERROR;
+      document.getElementById("authFailedText").textContent = texts.END_SCREEN_AUTHENTICATION_FAILED;
+      document.getElementById("awaitingInputText").textContent = texts.GAME_AWAITING_INPUT;
       document.getElementById("wordInput").placeholder = texts.GAME_INPUT_PLACEHOLDER;
     }
   });

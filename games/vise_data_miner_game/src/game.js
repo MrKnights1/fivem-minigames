@@ -60,24 +60,9 @@ class DataMinerGame {
 
     this.updateStats = this.updateStats.bind(this);
     this.updateSignal = this.updateSignal.bind(this);
-    this.start = this.start.bind(this);
-    this.cleanup = this.cleanup.bind(this);
-    this.generateGrid = this.generateGrid.bind(this);
     this.handleTileClick = this.handleTileClick.bind(this);
     this.handleTileRightClick = this.handleTileRightClick.bind(this);
-    this.placeHazards = this.placeHazards.bind(this);
-    this.calculateAdjacency = this.calculateAdjacency.bind(this);
-    this.getNeighbors = this.getNeighbors.bind(this);
-    this.revealTile = this.revealTile.bind(this);
-    this.floodFill = this.floodFill.bind(this);
-    this.toggleFlag = this.toggleFlag.bind(this);
-    this.updateHazardCounter = this.updateHazardCounter.bind(this);
-    this.checkWinCondition = this.checkWinCondition.bind(this);
-    this.startGameTimer = this.startGameTimer.bind(this);
-    this.stopGameTimer = this.stopGameTimer.bind(this);
     this.updateGameProgressBar = this.updateGameProgressBar.bind(this);
-    this.gameOver = this.gameOver.bind(this);
-    this.finish = this.finish.bind(this);
 
     if (isDebug()) {
       if (this.debugContainer) {
@@ -519,14 +504,31 @@ class DataMinerGame {
     this.checkWinCondition();
   }
 
-  /** Recursively reveals neighboring tiles when an empty tile (0 adjacent hazards) is clicked */
-  floodFill(tileIndex) {
-    this.getNeighbors(tileIndex).forEach((neighborIndex) => {
-      const neighbor = this.grid[neighborIndex];
-      if (neighbor && neighbor.state === TileState.HIDDEN) {
-        this.revealTile(neighborIndex);
+  /** Iteratively reveals neighboring tiles when an empty tile (0 adjacent hazards) is clicked */
+  floodFill(startIndex) {
+    const queue = [startIndex];
+
+    while (queue.length > 0) {
+      const currentIndex = queue.shift();
+
+      for (const neighborIndex of this.getNeighbors(currentIndex)) {
+        const neighbor = this.grid[neighborIndex];
+        if (!neighbor || neighbor.state !== TileState.HIDDEN) continue;
+
+        neighbor.state = TileState.REVEALED;
+        neighbor.element.classList.remove("tile-hidden", "tile-flagged");
+        neighbor.element.classList.add("tile-revealed");
+        neighbor.element.textContent = "";
+        this.revealedTilesCount++;
+
+        if (neighbor.adjacentHazards > 0) {
+          neighbor.element.textContent = neighbor.adjacentHazards;
+          neighbor.element.classList.add(`tile-${neighbor.adjacentHazards}`);
+        } else {
+          queue.push(neighborIndex);
+        }
       }
-    });
+    }
   }
 
   /** Toggles the flag state on a tile (marks/unmarks as suspected hazard) */
@@ -690,16 +692,16 @@ document.addEventListener("DOMContentLoaded", function () {
       const texts = response.texts;
 
       Array.from(document.getElementsByClassName("gameTitleText")).forEach((element) => {
-        element.innerHTML = texts.GAME_TITLE; // innerHTML preserved from original - texts come from trusted NUI config
+        element.textContent = texts.GAME_TITLE;
       });
       Array.from(document.getElementsByClassName("terminalTitleText")).forEach((element) => {
-        element.innerHTML = texts.TERMINAL_TITLE; // innerHTML preserved from original - texts come from trusted NUI config
+        element.textContent = texts.TERMINAL_TITLE;
       });
       Array.from(document.getElementsByClassName("accessGrantedText")).forEach((element) => {
-        element.innerHTML = texts.END_SCREEN_ACCESS_GRANTED; // innerHTML preserved from original - texts come from trusted NUI config
+        element.textContent = texts.END_SCREEN_ACCESS_GRANTED;
       });
       Array.from(document.getElementsByClassName("accessDeniedText")).forEach((element) => {
-        element.innerHTML = texts.END_SCREEN_ACCESS_DENIED; // innerHTML preserved from original - texts come from trusted NUI config
+        element.textContent = texts.END_SCREEN_ACCESS_DENIED;
       });
     }
   });

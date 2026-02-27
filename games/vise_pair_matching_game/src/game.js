@@ -152,6 +152,8 @@ class PairMatchingGame {
 
   /* Animation frame callback for the game timeout progress bar */
   updateProgressBar() {
+    if (!this.isActive) return;
+
     const elapsed = Date.now() - this.startedAt;
     const remainingPercent = Math.max(0, 100 - (elapsed / this.startedTimeoutDiff) * 100);
 
@@ -284,13 +286,19 @@ class PairMatchingGame {
     }
   }
 
+  /* Fisher-Yates shuffle for uniform randomness */
+  shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
   /* Shuffles icons and creates matched pairs array */
   generateCardPairs(availableIcons, numberOfPairs) {
-    const selectedIcons = [...availableIcons]
-      .sort(() => Math.random() - 0.5)
-      .slice(0, numberOfPairs);
-
-    return selectedIcons.concat(selectedIcons).sort(() => Math.random() - 0.5);
+    const selectedIcons = this.shuffle([...availableIcons]).slice(0, numberOfPairs);
+    return this.shuffle(selectedIcons.concat(selectedIcons));
   }
 
   /* Sets up the game board, timer, and creates card elements */
@@ -311,8 +319,14 @@ class PairMatchingGame {
 
   /* Periodically updates the fake CPU and memory usage display */
   updateStats() {
-    this.cpuElement.textContent = Math.floor(Math.random() * 30) + 70;
-    this.memoryElement.textContent = Math.floor(Math.random() * 30) + 70;
+    if (!this.isActive) return;
+
+    if (this.cpuElement) {
+      this.cpuElement.textContent = Math.floor(Math.random() * 30) + 70;
+    }
+    if (this.memoryElement) {
+      this.memoryElement.textContent = Math.floor(Math.random() * 30) + 70;
+    }
 
     const delay = 1000 + Math.random() * 1000;
     this.statsUpdateTimeout = setTimeout(() => this.updateStats(), delay);
@@ -390,10 +404,10 @@ class PairMatchingGame {
   /* Initializes and starts a new game with pair count and timeout */
   start(numberOfPairs, timeoutSeconds) {
     this.cleanup();
+    this.isActive = true;
     this.initialize(numberOfPairs, timeoutSeconds);
     showElement("app");
     this.sounds.start.play();
-    this.isActive = true;
   }
 
   /* Shows win/loss overlay and sends result to FiveM */
@@ -403,6 +417,13 @@ class PairMatchingGame {
     }
 
     this.isActive = false;
+
+    if (this.statsUpdateTimeout) clearTimeout(this.statsUpdateTimeout);
+    if (this.signalUpdateTimeout) clearTimeout(this.signalUpdateTimeout);
+    if (this.animationFrameId) cancelAnimationFrame(this.animationFrameId);
+    this.statsUpdateTimeout = null;
+    this.signalUpdateTimeout = null;
+    this.animationFrameId = null;
 
     setTimeout(() => {
       hideElement("app", () => {

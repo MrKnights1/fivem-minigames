@@ -16,7 +16,7 @@
  * Depends on shared/howler.js (Howl, Howler)
  */
 
-var gameTexts = {};
+const gameTexts = {};
 
 class GridMemoryGame {
   constructor() {
@@ -35,7 +35,7 @@ class GridMemoryGame {
     this.levelProgressBarAnimationId = null;
     this.isActive = false;
     this.inputLocked = true;
-    this.sequenceTimeoutId = null;
+    this.sequenceTimerIds = [];
     this.statsUpdateTimeout = null;
     this.signalUpdateTimeout = null;
 
@@ -186,9 +186,8 @@ class GridMemoryGame {
     this.lockInput();
     this.clearLevelTimer();
 
-    if (this.sequenceTimeoutId) {
-      clearTimeout(this.sequenceTimeoutId);
-    }
+    this.sequenceTimerIds.forEach((id) => clearTimeout(id));
+    this.sequenceTimerIds = [];
     if (this.statsUpdateTimeout) {
       clearTimeout(this.statsUpdateTimeout);
     }
@@ -196,7 +195,6 @@ class GridMemoryGame {
       clearTimeout(this.signalUpdateTimeout);
     }
 
-    this.sequenceTimeoutId = null;
     this.statsUpdateTimeout = null;
     this.signalUpdateTimeout = null;
     this.currentLevel = 0;
@@ -338,12 +336,11 @@ class GridMemoryGame {
     let delay = 500;
     this.lockInput();
 
-    if (this.sequenceTimeoutId) {
-      clearTimeout(this.sequenceTimeoutId);
-    }
+    this.sequenceTimerIds.forEach((id) => clearTimeout(id));
+    this.sequenceTimerIds = [];
 
     this.sequence.forEach((tileIndex, sequencePosition) => {
-      let timerId = setTimeout(() => {
+      const timerId = setTimeout(() => {
         if (!this.isActive || this.gameState !== "showing") return;
 
         const tileElement = this.gridContainer
@@ -353,16 +350,17 @@ class GridMemoryGame {
         if (tileElement) {
           this.sounds.demoSound.play();
           tileElement.classList.add("tile-highlight");
-          setTimeout(() => {
+          const highlightTimerId = setTimeout(() => {
             if (this.gridContainer && this.gridContainer.contains(tileElement)) {
               tileElement.classList.remove("tile-highlight");
             }
           }, this.tileDisplayTime);
+          this.sequenceTimerIds.push(highlightTimerId);
         }
 
         if (sequencePosition === this.sequence.length - 1) {
           const transitionDelay = this.tileDisplayTime + 100;
-          this.sequenceTimeoutId = setTimeout(() => {
+          const transitionTimerId = setTimeout(() => {
             if (this.isActive && this.gameState === "showing") {
               this.gameState = "waiting";
               this.unlockInput();
@@ -374,10 +372,11 @@ class GridMemoryGame {
               }
             }
           }, transitionDelay);
+          this.sequenceTimerIds.push(transitionTimerId);
         }
       }, delay);
 
-      this.sequenceTimeoutId = timerId;
+      this.sequenceTimerIds.push(timerId);
       delay += this.tileDisplayTime + this.timeBetweenTiles;
     });
   }
@@ -519,9 +518,8 @@ class GridMemoryGame {
     this.gameState = "gameover";
     this.clearLevelTimer();
 
-    if (this.sequenceTimeoutId) {
-      clearTimeout(this.sequenceTimeoutId);
-    }
+    this.sequenceTimerIds.forEach((id) => clearTimeout(id));
+    this.sequenceTimerIds = [];
     if (this.statsUpdateTimeout) {
       clearTimeout(this.statsUpdateTimeout);
     }
@@ -529,7 +527,6 @@ class GridMemoryGame {
       clearTimeout(this.signalUpdateTimeout);
     }
 
-    this.sequenceTimeoutId = null;
     this.statsUpdateTimeout = null;
     this.signalUpdateTimeout = null;
 
@@ -616,30 +613,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
       Array.from(document.getElementsByClassName("gameTitleText")).forEach(
         (element) => {
-          element.innerHTML = texts.GAME_TITLE;
+          element.textContent = texts.GAME_TITLE;
         }
       );
       Array.from(document.getElementsByClassName("terminalTitleText")).forEach(
         (element) => {
-          element.innerHTML = texts.TERMINAL_TITLE;
+          element.textContent = texts.TERMINAL_TITLE;
         }
       );
       Array.from(document.getElementsByClassName("accessGrantedText")).forEach(
         (element) => {
-          element.innerHTML = texts.END_SCREEN_ACCESS_GRANTED;
+          element.textContent = texts.END_SCREEN_ACCESS_GRANTED;
         }
       );
       Array.from(document.getElementsByClassName("accessDeniedText")).forEach(
         (element) => {
-          element.innerHTML = texts.END_SCREEN_ACCESS_DENIED;
+          element.textContent = texts.END_SCREEN_ACCESS_DENIED;
         }
       );
 
-      document.getElementById("sessionText").innerHTML =
+      document.getElementById("sessionText").textContent =
         texts.END_SCREEN_SESSION;
-      document.getElementById("errorText").innerHTML =
+      document.getElementById("errorText").textContent =
         texts.END_SCREEN_ERROR;
-      document.getElementById("authFailedText").innerHTML =
+      document.getElementById("authFailedText").textContent =
         texts.END_SCREEN_AUTHENTICATION_FAILED;
 
       gameTexts.GAME_STATE_IDLE = texts.GAME_STATE_IDLE;

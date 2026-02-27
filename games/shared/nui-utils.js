@@ -100,14 +100,21 @@ function hideElement(elementId, onComplete) {
   element.classList.add("opacity-0");
 
   let handled = false;
-  const onTransitionEnd = (event) => {
-    if (event.target !== element || event.propertyName !== "opacity" || handled) return;
-
-    element.classList.add("hidden");
+  const complete = () => {
+    if (handled) return;
     handled = true;
+    element.classList.add("hidden");
     element.removeEventListener("transitionend", onTransitionEnd);
     if (onComplete) onComplete();
   };
 
+  const onTransitionEnd = (event) => {
+    if (event.target !== element || event.propertyName !== "opacity") return;
+    complete();
+  };
+
   element.addEventListener("transitionend", onTransitionEnd);
+
+  // Fallback if transitionend never fires (e.g., prefers-reduced-motion, no transition)
+  setTimeout(complete, 2000);
 }

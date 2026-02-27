@@ -7,7 +7,7 @@
     <title>VISE PAIR MATCHING GAME</title>
     <script src="../shared/howler.js"></script>
     <script src="../shared/nui-utils.js"></script>
-    <script src="./src/game.js"></script>
+    <script defer src="./src/game.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-Vn8GtttG.css">
   </head>
   <body>
@@ -154,11 +154,11 @@
     <div id="debug" class="absolute bottom-4 right-4 flex flex-col gap-2 border-1 border-gray-100 px-8 py-4 hidden">
         <div class="relative">
             <label for="timeout" class="absolute -top-2 left-2 inline-block rounded-lg bg-white px-1 text-xs font-medium text-gray-900">Timeout</label>
-            <input type="number" name="timeout" id="timeout" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" placeholder="60" value=20>
+            <input type="number" name="timeout" id="timeout" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" placeholder="60" value="20">
         </div>
         <div class="relative">
             <label for="pairAmount" class="absolute -top-2 left-2 inline-block rounded-lg bg-white px-1 text-xs font-medium text-gray-900">Pair amount</label>
-            <input type="number" name="pairAmount" id="pairAmount" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" placeholder="6" value=6>
+            <input type="number" name="pairAmount" id="pairAmount" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" placeholder="6" value="6">
         </div>
         <button id="startGame" type="button" class="rounded-sm bg-indigo-500 px-2 py-1 text-xs font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Start game</button>
     </div>

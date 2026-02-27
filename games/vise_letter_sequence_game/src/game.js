@@ -17,7 +17,7 @@
 class LetterSequenceGame {
   constructor() {
     this.isActive = false;
-    this.gameLoopInterval = null;
+    this.progressBarAnimationId = null;
     this.startTime = 0;
     this.timeLimit = 10000;
     this.letters = [];
@@ -41,24 +41,6 @@ class LetterSequenceGame {
     };
 
     this.handleKeyDown = this.handleKeyDown.bind(this);
-
-    if (isDebug()) {
-      const debugPanel = document.getElementById("debug");
-      if (debugPanel) {
-        debugPanel.classList.remove("hidden");
-      }
-
-      const startButton = document.getElementById("startGame");
-      if (startButton) {
-        startButton.addEventListener("click", () => {
-          const timeoutInput = document.getElementById("timeout");
-          const numLettersInput = document.getElementById("numLetters");
-          const timeoutSeconds = parseInt(timeoutInput ? timeoutInput.value : undefined, 10) || 10;
-          const letterCount = parseInt(numLettersInput ? numLettersInput.value : undefined, 10) || 15;
-          this.start(letterCount, timeoutSeconds);
-        });
-      }
-    }
   }
 
   /** Returns a random letter from the allowed set (QWER ASDF). */
@@ -110,31 +92,34 @@ class LetterSequenceGame {
     this.startTime = Date.now();
     this.progressBar.style.width = "100%";
 
-    if (this.gameLoopInterval) {
-      clearInterval(this.gameLoopInterval);
+    if (this.progressBarAnimationId) {
+      cancelAnimationFrame(this.progressBarAnimationId);
     }
 
-    this.gameLoopInterval = setInterval(() => {
-      if (!this.isActive) {
-        this.stopGameLoop();
-        return;
-      }
-
-      const elapsed = Date.now() - this.startTime;
-      const remainingPercent = Math.max(0, 100 - (elapsed / this.timeLimit) * 100);
-      this.progressBar.style.width = `${remainingPercent}%`;
-
-      if (remainingPercent <= 0) {
-        this.handleFailure("Time expired");
-      }
-    }, 100);
+    this.updateProgressBar();
   }
 
-  /** Stops the countdown interval timer. */
+  /** Animation frame callback for smooth progress bar. */
+  updateProgressBar() {
+    if (!this.isActive) return;
+
+    const elapsed = Date.now() - this.startTime;
+    const remainingPercent = Math.max(0, 100 - (elapsed / this.timeLimit) * 100);
+    this.progressBar.style.width = `${remainingPercent}%`;
+
+    if (remainingPercent <= 0) {
+      this.progressBarAnimationId = null;
+      this.handleFailure("Time expired");
+    } else {
+      this.progressBarAnimationId = requestAnimationFrame(() => this.updateProgressBar());
+    }
+  }
+
+  /** Stops the progress bar animation. */
   stopGameLoop() {
-    if (this.gameLoopInterval) {
-      clearInterval(this.gameLoopInterval);
-      this.gameLoopInterval = null;
+    if (this.progressBarAnimationId) {
+      cancelAnimationFrame(this.progressBarAnimationId);
+      this.progressBarAnimationId = null;
     }
   }
 
@@ -174,8 +159,8 @@ class LetterSequenceGame {
         currentElement.classList.add("letter-fail");
       }
 
-      if (this.sounds.fail) {
-        this.sounds.fail.play();
+      if (this.sounds.lose) {
+        this.sounds.lose.play();
       }
 
       this.handleFailure(`Incorrect key pressed. Expected ${expectedLetter}, got ${pressedKey}`);
@@ -413,24 +398,24 @@ document.addEventListener("DOMContentLoaded", () => {
       const texts = response.texts;
 
       Array.from(document.getElementsByClassName("gameTitleText")).forEach((element) => {
-        element.innerHTML = texts.GAME_TITLE;
+        element.textContent = texts.GAME_TITLE;
       });
 
       Array.from(document.getElementsByClassName("terminalTitleText")).forEach((element) => {
-        element.innerHTML = texts.TERMINAL_TITLE;
+        element.textContent = texts.TERMINAL_TITLE;
       });
 
       Array.from(document.getElementsByClassName("accessGrantedText")).forEach((element) => {
-        element.innerHTML = texts.END_SCREEN_ACCESS_GRANTED;
+        element.textContent = texts.END_SCREEN_ACCESS_GRANTED;
       });
 
       Array.from(document.getElementsByClassName("accessDeniedText")).forEach((element) => {
-        element.innerHTML = texts.END_SCREEN_ACCESS_DENIED;
+        element.textContent = texts.END_SCREEN_ACCESS_DENIED;
       });
 
-      document.getElementById("sessionText").innerHTML = texts.END_SCREEN_SESSION;
-      document.getElementById("errorText").innerHTML = texts.END_SCREEN_ERROR;
-      document.getElementById("authFailedText").innerHTML = texts.END_SCREEN_AUTHENTICATION_FAILED;
+      document.getElementById("sessionText").textContent = texts.END_SCREEN_SESSION;
+      document.getElementById("errorText").textContent = texts.END_SCREEN_ERROR;
+      document.getElementById("authFailedText").textContent = texts.END_SCREEN_AUTHENTICATION_FAILED;
     }
   });
 });

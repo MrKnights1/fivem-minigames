@@ -7,11 +7,11 @@
     <title>VISE GRID MEMORY GAME</title>
     <script src="../shared/howler.js"></script>
     <script src="../shared/nui-utils.js"></script>
-    <script src="./src/game.js"></script>
+    <script defer src="./src/game.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-C-QYql4X.css">
   </head>
   <body>
-    <div id="app" class="font-mono bg-gray-900 text-main-400 rounded-md relative opacity-100 transition-opacity duration-1000 ease-in-out w-[30rem] max-w-[75rem]">
+    <div id="app" class="font-mono bg-gray-900 text-main-400 rounded-md relative hidden opacity-0 transition-opacity duration-1000 ease-in-out w-[30rem] max-w-[75rem]">
         <div class="p-4 flex flex-col min-h-[25rem]"> <div class="flex justify-between items-center pb-3 border-b border-b-top-bar-border">
                 <div class="flex items-center gap-2">
                     <div>
@@ -152,71 +152,36 @@
         document.addEventListener("DOMContentLoaded", function() {
             const startButton = document.getElementById("startButton");
             const startSimulation = document.getElementById("startSimulation");
-            
+
             startButton.addEventListener("click", function() {
-                console.log("Start button clicked");
-                
                 startSimulation.style.display = "none";
-                
+
                 setTimeout(() => {
-                    console.log("Looking for debug inputs...");
-                    
                     const gridSizeInput = document.getElementById("gridSize");
                     const tileDisplayTimeInput = document.getElementById("tileDisplayTime");
                     const levelTimeoutInput = document.getElementById("levelTimeout");
                     const targetLevelInput = document.getElementById("targetLevel");
-                    
-                    console.log("Found inputs:", {
-                        gridSize: !!gridSizeInput,
-                        tileDisplayTime: !!tileDisplayTimeInput,
-                        levelTimeout: !!levelTimeoutInput,
-                        targetLevel: !!targetLevelInput
-                    });
-                    
+
                     if (gridSizeInput) {
                         gridSizeInput.value = "3";
                         gridSizeInput.dispatchEvent(new Event('input', { bubbles: true }));
-                        gridSizeInput.dispatchEvent(new Event('change', { bubbles: true }));
-                        console.log("Set grid size to 3");
                     }
                     if (tileDisplayTimeInput) {
                         tileDisplayTimeInput.value = "150";
                         tileDisplayTimeInput.dispatchEvent(new Event('input', { bubbles: true }));
-                        tileDisplayTimeInput.dispatchEvent(new Event('change', { bubbles: true }));
-                        console.log("Set display time to 150");
                     }
                     if (levelTimeoutInput) {
                         levelTimeoutInput.value = "8000";
                         levelTimeoutInput.dispatchEvent(new Event('input', { bubbles: true }));
-                        levelTimeoutInput.dispatchEvent(new Event('change', { bubbles: true }));
-                        console.log("Set level timeout to 8000");
                     }
                     if (targetLevelInput) {
                         targetLevelInput.value = "6";
                         targetLevelInput.dispatchEvent(new Event('input', { bubbles: true }));
-                        targetLevelInput.dispatchEvent(new Event('change', { bubbles: true }));
-                        console.log("Set target level to 6");
                     }
-                    
-                    // Try to click the debug start button if it exists
+
                     const debugStartButton = document.getElementById("startGame");
-                    console.log("Debug start button found:", !!debugStartButton);
-                    
                     if (debugStartButton) {
-                        console.log("Clicking debug start button");
                         debugStartButton.click();
-                    } else {
-                        console.log("Using fallback message method");
-                        // Fallback: Auto-trigger the game with fixed settings
-                        window.postMessage({
-                            action: 'start',
-                            data: {
-                                gridSize: 3,
-                                tileDisplayTime: 150,
-                                levelTimeout: 8000,
-                                targetLevel: 6
-                            }
-                        }, '*');
                     }
                 }, 500);
             });

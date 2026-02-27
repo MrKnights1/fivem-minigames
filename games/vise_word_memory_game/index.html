@@ -8,7 +8,7 @@
     <!-- Link to the stylesheet -->
     <script src="../shared/howler.js"></script>
     <script src="../shared/nui-utils.js"></script>
-    <script src="./src/game.js"></script>
+    <script defer src="./src/game.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-8fOYiDii.css">
   </head>
   <body>
@@ -132,8 +132,6 @@
                         <div class="grid grid-cols-2 gap-2 text-xs">
                             <div class="text-gray-500" id="sessionText">SESSION: </div>
                             <div class="text-main-400">0x8F3A92C1</div>
-                            <!-- <div class="text-gray-500">CLEARANCE: </div>
-                            <div class="text-main-400">LEVEL ALPHA-4</div> -->
                         </div>
                     </div>
                 </div>
@@ -170,7 +168,7 @@
                         </svg>
                     </div>
                     <div class="text-red-500 text-2xl font-bold tracking-widest mb-2 relative">
-                        <div class="absolute inset-0 blur-sm opacity-70 uppercase left-right-wiggle accessDeniedText">Access denied</div>
+                        <div class="absolute inset-0 blur-sm opacity-70 uppercase left-right-wiggle accessDeniedText">ACCESS DENIED</div>
                         <span class="relative z-50 left-right-wiggle accessDeniedText">ACCESS DENIED</span>
                     </div>
                     <div class="flex items-center justify-center mt-2">
@@ -186,7 +184,7 @@
         <h3 class="text-center font-semibold text-gray-700 mb-2">Debug Controls</h3>
         <div class="relative">
             <label for="wordTimeout" class="absolute -top-2 left-2 inline-block rounded-lg bg-gray-100 px-1 text-xs font-medium text-gray-600">Word Timeout (s)</label>
-            <input type="number" name="wordTimeout" id="wordTimeout" class="block w-full rounded-md border-0 bg-white px-3 py-1.5 text-base text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="5" value="5555">
+            <input type="number" name="wordTimeout" id="wordTimeout" class="block w-full rounded-md border-0 bg-white px-3 py-1.5 text-base text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" placeholder="5" value="5">
         </div>
         <div class="relative">
             <label for="targetScore" class="absolute -top-2 left-2 inline-block rounded-lg bg-gray-100 px-1 text-xs font-medium text-gray-600">Target Score</label>
