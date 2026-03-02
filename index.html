@@ -555,60 +555,62 @@
     </div>
 
     <script>
+        const gameNames = {
+            'data_miner_game': 'Data Miner',
+            'grid_memory_game': 'Grid Memory',
+            'letter_sequence_game': 'Letter Sequence',
+            'pair_matching_game': 'Pair Matching',
+            'typeracer_game': 'TypeRacer',
+            'word_memory_game': 'Word Memory',
+            'thermite_game': 'Thermite',
+            'hacking_device_game': 'Hacking Device'
+        };
+
+        var menu = document.getElementById('menu');
+        var gameFrame = document.getElementById('gameFrame');
+        var gameIframe = document.getElementById('gameIframe');
+        var backButton = document.querySelector('.back-button');
+
         function playGame(gameName) {
-            const menu = document.getElementById('menu');
-            const gameFrame = document.getElementById('gameFrame');
-            const gameIframe = document.getElementById('gameIframe');
-            const backButton = document.querySelector('.back-button');
-
-            // Set the iframe source to the game's index.html
-            gameIframe.src = `games/${gameName}/index.html`;
-
-            // Hide menu and show game
-            menu.style.display = 'none';
-            gameFrame.style.display = 'block';
-            backButton.style.display = 'block';
-
-            // Change page title
-            document.title = `FiveM Minigames - ${getGameDisplayName(gameName)}`;
+            location.hash = gameName;
         }
 
         function goBack() {
-            const menu = document.getElementById('menu');
-            const gameFrame = document.getElementById('gameFrame');
-            const gameIframe = document.getElementById('gameIframe');
-            const backButton = document.querySelector('.back-button');
+            history.replaceState(null, '', location.pathname);
+            showMenu();
+        }
 
-            // Clear iframe source
+        function showGame(gameName) {
+            gameIframe.src = 'games/' + gameName + '/index.html';
+            menu.style.display = 'none';
+            gameFrame.style.display = 'block';
+            backButton.style.display = 'block';
+            document.title = 'FiveM Minigames - ' + (gameNames[gameName] || gameName);
+        }
+
+        function showMenu() {
             gameIframe.src = '';
-
-            // Show menu and hide game
             menu.style.display = 'block';
             gameFrame.style.display = 'none';
             backButton.style.display = 'none';
-
-            // Reset page title
             document.title = 'FiveM Minigames';
         }
 
-        function getGameDisplayName(gameName) {
-            const names = {
-                'data_miner_game': 'Data Miner',
-                'grid_memory_game': 'Grid Memory',
-                'letter_sequence_game': 'Letter Sequence',
-                'pair_matching_game': 'Pair Matching',
-                'typeracer_game': 'TypeRacer',
-                'word_memory_game': 'Word Memory',
-                'thermite_game': 'Thermite',
-                'hacking_device_game': 'Hacking Device'
-            };
-            return names[gameName] || gameName;
+        function handleRoute() {
+            var hash = location.hash.replace('#', '');
+            if (hash && gameNames[hash]) {
+                showGame(hash);
+            } else {
+                showMenu();
+            }
         }
 
-        // Handle escape key to go back
+        window.addEventListener('hashchange', handleRoute);
+        window.addEventListener('popstate', handleRoute);
+        handleRoute();
+
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                const gameFrame = document.getElementById('gameFrame');
                 if (gameFrame.style.display === 'block') {
                     goBack();
                 }
