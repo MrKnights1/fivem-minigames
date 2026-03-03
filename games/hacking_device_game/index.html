@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.4">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/solid.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="minigame.css">
+    <script src="../shared/settings.js"></script>
     <script defer src="minigame.js"></script>
 </head>
 <body>
@@ -72,5 +73,9 @@
         </div>
     </div>
     <div class="restart"><button class="btn_again">AGAIN!</button></div>
+    <script>
+        initSettings('hacking_device', ['#timeout', '#hide_chars', 'input[name="char_group[]"]', 'input[name="show_type"]']);
+        document.querySelector('.timeout_value').textContent = document.querySelector('#timeout').value + 's';
+    </script>
 </body>
 </html>

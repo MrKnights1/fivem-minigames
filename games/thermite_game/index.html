@@ -162,6 +162,7 @@
             font-size: 20px;
         }
     </style>
+    <script src="../shared/settings.js"></script>
 </head>
 <body>
     <h1 class="title">Thermite Minigame</h1>
@@ -193,13 +194,18 @@
     <div class="restart"><button class="btn_again">AGAIN!</button></div>
 
     <script>
+        initSettings('thermite', ['#speed', '#grid']);
+        document.querySelector('.speed_value').textContent = document.querySelector('#speed').value + 's';
+        var gridVal = document.querySelector('#grid').value;
+        document.querySelector('.grid_value').textContent = gridVal + 'x' + gridVal;
+
         let timer_start, timer_game, timer_finish, timer_time, good_positions, wrong, right, speed, timerStart, positions;
         let game_started = false;
         let streak = 0;
         let max_streak = 0;
         let best_time = 99.999;
 
-        let mode = 7;
+        let mode = parseInt(document.querySelector('#grid').value) || 7;
         let mode_data = {};
         mode_data[5] = [10, '92px'];
         mode_data[6] = [14, '74px'];
@@ -242,7 +248,7 @@
         });
         document.querySelector('#grid').addEventListener('input', function(ev){
             document.querySelector('.grid_value').innerHTML = ev.target.value + 'x' + ev.target.value;
-            mode = ev.target.value;
+            mode = parseInt(ev.target.value, 10);
             streak = 0;
             reset();
         });
@@ -358,7 +364,7 @@
                     game_started = true;
 
                     startTimer();
-                    speed = document.querySelector('#speed').value;
+                    speed = parseInt(document.querySelector('#speed').value, 10);
                     timer_finish = sleep((speed * 1000), function(){
                         game_started = false;
                         wrong = 3;

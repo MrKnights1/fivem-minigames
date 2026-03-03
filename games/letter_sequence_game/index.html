@@ -7,6 +7,7 @@
     <title>Letter Sequence</title>
   <script src="../shared/howler.js"></script>
   <script src="../shared/nui-utils.js"></script>
+  <script src="../shared/settings.js"></script>
   <script defer src="./src/game.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-CXl67T4r.css">
   <style>body{background:#111!important}</style>
@@ -164,5 +165,6 @@
         <button id="startGame" type="button" class="rounded-sm bg-indigo-500 px-2 py-1 text-xs font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Start game</button>
      </div>
 
+<script>initSettings('letter_sequence', ['#numLetters', '#timeout']);</script>
 </body>
 </html>

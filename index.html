@@ -375,6 +375,7 @@
         .game-card:nth-child(6) { animation-delay: 0.38s; }
         .game-card:nth-child(7) { animation-delay: 0.44s; }
         .game-card:nth-child(8) { animation-delay: 0.50s; }
+        .game-card:nth-child(9) { animation-delay: 0.56s; }
 
         @keyframes cardIn {
             from {
@@ -440,7 +441,7 @@
         <div class="status-bar">
             <div class="status-item">
                 <div class="status-dot"></div>
-                <span>8 MODULES LOADED</span>
+                <span>9 MODULES LOADED</span>
             </div>
             <div class="status-item">
                 <span>ALL SYSTEMS NOMINAL</span>
@@ -543,10 +544,22 @@
                 <div class="game-desc">Find the target codes in a shuffling grid. Navigate with WASD, select with Enter.</div>
                 <div class="card-tag">Visual / Keyboard</div>
             </div>
+
+            <div class="game-card" onclick="playGame('untangle_game')">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24"><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><circle cx="12" cy="12" r="2"/><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/><line x1="5" y1="5" x2="12" y2="12"/><line x1="19" y1="5" x2="12" y2="12"/></svg>
+                    </div>
+                    <div class="card-arrow">&#8594;</div>
+                </div>
+                <div class="game-title">Untangle</div>
+                <div class="game-desc">Drag the dots until no lines cross. Spatial reasoning under time pressure.</div>
+                <div class="card-tag">Spatial / Puzzle</div>
+            </div>
         </div>
 
         <div class="footer">
-            <span>8 minigames available</span>
+            <span>9 minigames available</span>
         </div>
     </div>
 
@@ -563,7 +576,8 @@
             'typeracer_game': 'TypeRacer',
             'word_memory_game': 'Word Memory',
             'thermite_game': 'Thermite',
-            'hacking_device_game': 'Hacking Device'
+            'hacking_device_game': 'Hacking Device',
+            'untangle_game': 'Untangle'
         };
 
         var menu = document.getElementById('menu');
