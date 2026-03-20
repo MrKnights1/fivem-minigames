@@ -331,11 +331,6 @@ class LetterSequenceGame {
 document.addEventListener("DOMContentLoaded", () => {
   const game = new LetterSequenceGame();
 
-  game.cpuEl = document.getElementById("cpuNumber");
-  game.memEl = document.getElementById("memoryNumber");
-  game.progressBar = document.getElementById("progress-fill");
-  game.letterContainer = document.getElementById("letter-container");
-
   if (isDebug()) {
     const startButton = document.getElementById("startGame");
     const timeoutInput = document.getElementById("timeout");

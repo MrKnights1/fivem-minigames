@@ -203,7 +203,7 @@ class GridMemoryGame {
     this.currentSequenceIndex = 0;
 
     if (this.gridContainer) {
-      this.gridContainer.innerHTML = "";
+      this.gridContainer.textContent = "";
     }
     if (this.scoreProgressBarFill) {
       this.scoreProgressBarFill.style.width = "0%";
@@ -278,7 +278,7 @@ class GridMemoryGame {
   generateGrid() {
     if (!this.gridContainer) return;
 
-    this.gridContainer.innerHTML = "";
+    this.gridContainer.textContent = "";
     this.gridContainer.style.display = "grid";
     this.gridContainer.style.gridTemplateColumns = `repeat(${this.gridSize}, minmax(0, 1fr))`;
     this.gridContainer.style.gap = "0.5rem";

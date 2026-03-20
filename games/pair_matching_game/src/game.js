@@ -334,6 +334,8 @@ class PairMatchingGame {
 
   /* Periodically updates the fake signal strength bars */
   updateSignal() {
+    if (!this.isActive) return;
+
     const signalBars = document.querySelectorAll("#signalBars div");
     let activeBars;
 
@@ -363,7 +365,9 @@ class PairMatchingGame {
     });
 
     const delay = 100 + Math.random() * 400;
-    this.signalUpdateTimeout = setTimeout(() => this.updateSignal(), delay);
+    if (this.isActive) {
+      this.signalUpdateTimeout = setTimeout(() => this.updateSignal(), delay);
+    }
   }
 
   /* Resets all game state, clears timers, and hides overlays */

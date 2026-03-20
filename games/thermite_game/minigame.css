@@ -1,29 +1,3 @@
-/*!
- * Font Awesome Free 5.15.2 by @fontawesome - https://fontawesome.com
- * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
- */
-@font-face {
-    font-family: "Font Awesome 5 Free";
-    font-style: normal;
-    font-weight: 900;
-    font-display: block;
-    src: url(https://use.fontawesome.com/releases/v5.15.2/webfonts/fa-solid-900.eot);
-    src: url(https://use.fontawesome.com/releases/v5.15.2/webfonts/fa-solid-900.eot?#iefix) format("embedded-opentype"),
-         url(https://use.fontawesome.com/releases/v5.15.2/webfonts/fa-solid-900.woff2) format("woff2"),
-         url(https://use.fontawesome.com/releases/v5.15.2/webfonts/fa-solid-900.woff) format("woff"),
-         url(https://use.fontawesome.com/releases/v5.15.2/webfonts/fa-solid-900.ttf) format("truetype"),
-         url(https://use.fontawesome.com/releases/v5.15.2/webfonts/fa-solid-900.svg#fontawesome) format("svg")
-}
-
-.fa, .fas {
-    font-family: "Font Awesome 5 Free", sans-serif;
-    font-weight: 900
-}
-
-/*!
- * Game
- */
-
 body{
     background-color: #15181d;
     font-family: sans-serif;
@@ -36,9 +10,6 @@ body{
 .description{
     text-align: center;
     color: gray;
-}
-.description sub{
-    font-style: italic;
 }
 
 .streaks {
@@ -81,7 +52,7 @@ body{
     margin: 0 auto 10px;
     border-radius: 6px;
 }
-.option.dots input,
+.option.grid input,
 .option.speed input{
     vertical-align: text-top;
 }
@@ -90,7 +61,7 @@ body{
     width: 18px;
     text-align: right;
 }
-.dots_value{
+.grid_value{
     display: inline-block;
     width: 40px;
     text-align: center;
@@ -105,15 +76,6 @@ body{
     max-height: 540px;
     background-color: #232832;
 }
-
-.untanglecanvas {
-    height: 500px;
-    width: 500px;
-    margin: 20px;
-    background-color: #094e1c;
-    touch-action: none;
-}
-
 .splash{
     display: inline-block;
     width: 100%;
@@ -121,11 +83,35 @@ body{
     text-align: center;
     color: white;
     font-size: 16px;
-    user-select: none;
 }
 .splash .hacker{
     font-size: 65px;
     margin-bottom: 30px;
+}
+.groups{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    user-select: none;
+}
+.group{
+    width: 74px;
+    height: 74px;
+    border: 8px #232832 solid;
+    background-color: #34475C;
+}
+.jewelry .group{
+    width: 92px;
+    height: 92px;
+}
+.proper{
+    background-color: #006600;
+}
+.good{
+    background-color: #CCCCCC;
+}
+.bad{
+    background-color: #F00F18;
 }
 .hidden {
     display: none;

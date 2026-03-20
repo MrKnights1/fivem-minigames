@@ -428,7 +428,7 @@
 <body>
     <div class="bg-grid"></div>
 
-    <button class="back-button" onclick="goBack()">&#8592; BACK</button>
+    <button class="back-button" id="backButton">&#8592; BACK</button>
 
     <div id="menu" class="menu-container">
         <div class="header">
@@ -449,7 +449,7 @@
         </div>
 
         <div class="games-grid">
-            <div class="game-card" onclick="playGame('data_miner_game')">
+            <div class="game-card" data-game="data_miner_game">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
@@ -461,7 +461,7 @@
                 <div class="card-tag">Grid / Logic</div>
             </div>
 
-            <div class="game-card" onclick="playGame('grid_memory_game')">
+            <div class="game-card" data-game="grid_memory_game">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
@@ -473,7 +473,7 @@
                 <div class="card-tag">Memory / Pattern</div>
             </div>
 
-            <div class="game-card" onclick="playGame('letter_sequence_game')">
+            <div class="game-card" data-game="letter_sequence_game">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
@@ -485,7 +485,7 @@
                 <div class="card-tag">Speed / Keyboard</div>
             </div>
 
-            <div class="game-card" onclick="playGame('pair_matching_game')">
+            <div class="game-card" data-game="pair_matching_game">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24"><rect x="2" y="4" width="8" height="12" rx="1"/><rect x="14" y="4" width="8" height="12" rx="1"/><path d="M6 8v4M18 8v4"/></svg>
@@ -497,7 +497,7 @@
                 <div class="card-tag">Memory / Speed</div>
             </div>
 
-            <div class="game-card" onclick="playGame('typeracer_game')">
+            <div class="game-card" data-game="typeracer_game">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
@@ -509,7 +509,7 @@
                 <div class="card-tag">Typing / Speed</div>
             </div>
 
-            <div class="game-card" onclick="playGame('word_memory_game')">
+            <div class="game-card" data-game="word_memory_game">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
@@ -521,7 +521,7 @@
                 <div class="card-tag">Memory / Focus</div>
             </div>
 
-            <div class="game-card" onclick="playGame('thermite_game')">
+            <div class="game-card" data-game="thermite_game">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24"><path d="M12 2c1 3 3 4.5 3 8a3 3 0 1 1-6 0c0-3.5 2-5 3-8z"/><path d="M8 21h8"/><path d="M12 15v6"/></svg>
@@ -533,7 +533,7 @@
                 <div class="card-tag">Reflex / Pattern</div>
             </div>
 
-            <div class="game-card" onclick="playGame('hacking_device_game')">
+            <div class="game-card" data-game="hacking_device_game">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><path d="M7 8h2M11 8h2M15 8h2M7 12h2M11 12h2"/></svg>
@@ -545,7 +545,7 @@
                 <div class="card-tag">Visual / Keyboard</div>
             </div>
 
-            <div class="game-card" onclick="playGame('untangle_game')">
+            <div class="game-card" data-game="untangle_game">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24"><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><circle cx="12" cy="12" r="2"/><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/><line x1="5" y1="5" x2="12" y2="12"/><line x1="19" y1="5" x2="12" y2="12"/></svg>
@@ -563,9 +563,7 @@
         </div>
     </div>
 
-    <div id="gameFrame" class="game-frame">
-        <iframe id="gameIframe" class="game-iframe" src=""></iframe>
-    </div>
+    <div id="gameFrame" class="game-frame"></div>
 
     <script>
         const gameNames = {
@@ -580,10 +578,9 @@
             'untangle_game': 'Untangle'
         };
 
-        var menu = document.getElementById('menu');
-        var gameFrame = document.getElementById('gameFrame');
-        var gameIframe = document.getElementById('gameIframe');
-        var backButton = document.querySelector('.back-button');
+        const menu = document.getElementById('menu');
+        const gameFrame = document.getElementById('gameFrame');
+        const backButton = document.getElementById('backButton');
 
         function playGame(gameName) {
             location.hash = gameName;
@@ -595,7 +592,14 @@
         }
 
         function showGame(gameName) {
-            gameIframe.src = 'games/' + gameName + '/index.html';
+            // Recreate iframe each time to avoid polluting browser history
+            const old = gameFrame.querySelector('.game-iframe');
+            if (old) old.remove();
+            const iframe = document.createElement('iframe');
+            iframe.className = 'game-iframe';
+            iframe.src = 'games/' + gameName + '/index.html';
+            gameFrame.appendChild(iframe);
+
             menu.style.display = 'none';
             gameFrame.style.display = 'block';
             backButton.style.display = 'block';
@@ -603,7 +607,9 @@
         }
 
         function showMenu() {
-            gameIframe.src = '';
+            const iframe = gameFrame.querySelector('.game-iframe');
+            if (iframe) iframe.remove();
+
             menu.style.display = 'block';
             gameFrame.style.display = 'none';
             backButton.style.display = 'none';
@@ -611,13 +617,21 @@
         }
 
         function handleRoute() {
-            var hash = location.hash.replace('#', '');
+            const hash = location.hash.slice(1);
             if (hash && gameNames[hash]) {
                 showGame(hash);
             } else {
                 showMenu();
             }
         }
+
+        backButton.addEventListener('click', goBack);
+
+        document.querySelectorAll('.game-card[data-game]').forEach(function(card) {
+            card.addEventListener('click', function() {
+                playGame(this.dataset.game);
+            });
+        });
 
         window.addEventListener('hashchange', handleRoute);
         window.addEventListener('popstate', handleRoute);

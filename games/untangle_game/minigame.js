@@ -1,5 +1,5 @@
 let timer_start, timer_finish, timer_hide, timer_time, wrong, speed, timerStart;
-let game_started = false;
+let timerRunning = false;
 let streak = 0;
 let max_streak = 0;
 let best_time = 99.999;
@@ -14,9 +14,9 @@ const random = (min, max) => {
 canvas.width = 500;
 canvas.height = 500;
 
-let amountOfDots = parseInt(document.querySelector('#dots').value) || 7;
+let amountOfDots = parseInt(document.querySelector('#dots').value, 10) || 7;
 let selectedDot = null; // Keeps track of the selected dot, if any.
-let offset = { x: 0, y: 0 }; // Keeps track of the offset between the mouse position and the selected dot.
+let offset = { x: 0, y: 0 }; // Keeps track of the offset between the pointer position and the selected dot.
 
 let dots = [];
 let lines = [];
@@ -178,27 +178,17 @@ function getIntersection(x1, y1, x2, y2, x3, y3, x4, y4) {
     return { x: x, y: y };
 }
 
-const getCookieValue = (name) => (
-    document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || ''
-)
-let getMaxStreakFromCookie = () => {
-    let str = getCookieValue('max-streak_untangle');
-    if(str !== '')
-        return parseInt(str, 10);
-    else
-        return 0;
+let getMaxStreak = () => {
+    const str = localStorage.getItem('max-streak_untangle');
+    return str !== null ? parseInt(str, 10) : 0;
 }
-let getBestTimeFromCookie = () => {
-    let str = getCookieValue('best-time_untangle');
-    if(str !== '')
-        return parseFloat(str);
-    else
-        return 99.999;
+let getBestTime = () => {
+    const str = localStorage.getItem('best-time_untangle');
+    return str !== null ? parseFloat(str) : 99.999;
 }
-max_streak = getMaxStreakFromCookie();
-best_time = getBestTimeFromCookie();
+max_streak = getMaxStreak();
+best_time = getBestTime();
 
-const sleep = (ms, fn) => {return setTimeout(fn, ms)};
 
 function addListeners(){
     // Options
@@ -223,8 +213,8 @@ function addListeners(){
         streak = 0;
         reset();
     });
-    canvas.addEventListener('mousedown', (e) => {
-        // Loop through all the dots to see if the mouse is inside one of them.
+    canvas.addEventListener('pointerdown', (e) => {
+        // Loop through all the dots to see if the pointer is inside one of them.
         for (let i = 0; i < dots.length; i++) {
           const dot = dots[i];
           const dx = e.offsetX - dot.x;
@@ -238,18 +228,18 @@ function addListeners(){
           }
         }
     });
-      
-    canvas.addEventListener('mousemove', (e) => {
-        // If a dot is currently selected, move it to the new mouse position.
+
+    canvas.addEventListener('pointermove', (e) => {
+        // If a dot is currently selected, move it to the new pointer position.
         if (selectedDot !== null) {
           selectedDot.x = e.offsetX - offset.x;
           selectedDot.y = e.offsetY - offset.y;
           redraw(); // Redraw the dots and lines.
         }
     });
-      
-    canvas.addEventListener('mouseup', () => {
-        // Deselect the dot when the mouse button is released.
+
+    canvas.addEventListener('pointerup', () => {
+        // Deselect the dot when the pointer is released.
         selectedDot = null;
         check();
     });
@@ -263,12 +253,12 @@ function check(timeout){
         streak++;
         if(streak > max_streak){
             max_streak = streak;
-            document.cookie = "max-streak_untangle="+max_streak;
+            localStorage.setItem('max-streak_untangle', max_streak);
         }
-        let time = document.querySelector('.streaks .time').innerHTML;
+        let time = document.querySelector('.streaks .time').textContent;
         if(parseFloat(time) < best_time){
             best_time = parseFloat(time);
-            document.cookie = "best-time_untangle="+best_time;
+            localStorage.setItem('best-time_untangle', best_time);
         }
         if (!timeout) {
             stopTimer();
@@ -288,8 +278,8 @@ function reset(){
     clearTimeout(timer_hide);
     clearTimeout(timer_finish);
 
-    max_streak = getMaxStreakFromCookie();
-    best_time = getBestTimeFromCookie();
+    max_streak = getMaxStreak();
+    best_time = getBestTime();
 
     document.querySelector('.splash').classList.remove('hidden');
     document.querySelector('.untanglecanvas').classList.add('hidden');
@@ -310,43 +300,44 @@ function start(){
         drawDots();
     }
 
-    document.querySelector('.streak').innerHTML = streak;
-    document.querySelector('.max_streak').innerHTML = max_streak;
-    document.querySelector('.best_time').innerHTML = best_time;
+    document.querySelector('.streak').textContent = streak;
+    document.querySelector('.max_streak').textContent = max_streak;
+    document.querySelector('.best_time').textContent = best_time;
 
-    timer_start = sleep(2000, function(){
+    timer_start = setTimeout(function(){
         document.querySelector('.splash').classList.add('hidden');
         document.querySelector('.untanglecanvas').classList.remove('hidden');
-        
-        game_started = true;
 
         startTimer();
         speed = parseInt(document.querySelector('#speed').value, 10);
-        timer_finish = sleep((speed * 1000), function(){
+        timer_finish = setTimeout(function(){
             check(true);
-        });
-    });
+        }, speed * 1000);
+    }, 2000);
 }
 
 function startTimer(){
-    timerStart = new Date();
-    timer_time = setInterval(timer,1);
-}
-function timer(){
-    let timerNow = new Date();
-    let timerDiff = new Date();
-    timerDiff.setTime(timerNow - timerStart);
-    let ms = timerDiff.getMilliseconds();
-    let sec = timerDiff.getSeconds();
-    if (ms < 10) {ms = "00"+ms;}else if (ms < 100) {ms = "0"+ms;}
-    document.querySelector('.streaks .time').innerHTML = sec+"."+ms;
+    timerStart = Date.now();
+    timerRunning = true;
+    function tick() {
+        if (!timerRunning) return;
+        const elapsed = Date.now() - timerStart;
+        const sec = Math.floor(elapsed / 1000);
+        const ms = elapsed % 1000;
+        const msStr = ms < 10 ? "00" + ms : ms < 100 ? "0" + ms : String(ms);
+        document.querySelector('.streaks .time').textContent = sec + "." + msStr;
+        timer_time = requestAnimationFrame(tick);
+    }
+    timer_time = requestAnimationFrame(tick);
 }
 function stopTimer(){
-    clearInterval(timer_time);
+    timerRunning = false;
+    cancelAnimationFrame(timer_time);
 }
 function resetTimer(){
-    clearInterval(timer_time);
-    document.querySelector('.streaks .time').innerHTML = '0.000';
+    timerRunning = false;
+    cancelAnimationFrame(timer_time);
+    document.querySelector('.streaks .time').textContent = '0.000';
 }
 
 addListeners();

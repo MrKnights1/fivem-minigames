@@ -6,20 +6,17 @@ let best_time = 99.999;
 let codes_pos = 0;
 let current_pos = 43;
 
-// Get max streak from cookie
-const regex = /max-streak_hackingdevice=([\d]+)/g;
-let cookie = document.cookie;
-if((cookie = regex.exec(cookie)) !== null){
-    max_streak = cookie[1];
+// Get max streak from localStorage
+const stored_max_streak = localStorage.getItem('max-streak_hackingdevice');
+if (stored_max_streak !== null) {
+    max_streak = parseInt(stored_max_streak, 10);
 }
-// Get max streak from cookie
-const regex_time = /best-time_hackingdevice=([\d.]+)/g;
-cookie = document.cookie;
-if((cookie = regex_time.exec(cookie)) !== null){
-    best_time = parseFloat(cookie[1]);
+// Get best time from localStorage
+const stored_best_time = localStorage.getItem('best-time_hackingdevice');
+if (stored_best_time !== null) {
+    best_time = parseFloat(stored_best_time);
 }
 
-const sleep = (ms, fn) => {return setTimeout(fn, ms)};
 
 const random = (min, max) => {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -66,7 +63,7 @@ const randomSetChar = () => {
 
 // Options
 document.querySelector('#timeout').addEventListener('input', function(ev){
-    document.querySelector('.timeout_value').innerHTML = ev.target.value + 's';
+    document.querySelector('.timeout_value').textContent = ev.target.value + 's';
     streak = 0;
     reset();
 });
@@ -121,12 +118,12 @@ function check(){
         streak++;
         if(streak > max_streak){
             max_streak = streak;
-            document.cookie = "max-streak_hackingdevice="+max_streak;
+            localStorage.setItem('max-streak_hackingdevice', max_streak);
         }
-        let time = document.querySelector('.streaks .time').innerHTML;
+        let time = document.querySelector('.streaks .time').textContent;
         if(parseFloat(time) < best_time){
             best_time = parseFloat(time);
-            document.cookie = "best-time_hackingdevice="+best_time;
+            localStorage.setItem('best-time_hackingdevice', best_time);
         }
         reset();
     }else{
@@ -147,10 +144,10 @@ let moveCodes = () => {
     codes_tmp.splice(0, codes_pos);
 
     let codesElem = document.querySelector('.minigame .codes');
-    codesElem.innerHTML = '';
+    codesElem.textContent = '';
     for(let i=0; i<80; i++){
         let div = document.createElement('div');
-        div.innerHTML = codes_tmp[i];
+        div.textContent = codes_tmp[i];
         codesElem.append(div);
     }
 
@@ -200,9 +197,9 @@ function reset(restart = true){
 
     resetTimer();
     clearTimeout(timer_start);
-    clearTimeout(timer_game);
+    clearInterval(timer_game);
     clearTimeout(timer_finish);
-    clearTimeout(timer_hide);
+    clearInterval(timer_hide);
 
     if(restart){
         document.querySelector('.minigame .hack').classList.add('hidden');
@@ -240,11 +237,11 @@ function start(){
     }
 
     document.querySelector('.btn_again').blur();
-    document.querySelector('.streak').innerHTML = streak;
-    document.querySelector('.max_streak').innerHTML = max_streak;
-    document.querySelector('.best_time').innerHTML = best_time;
+    document.querySelector('.streak').textContent = streak;
+    document.querySelector('.max_streak').textContent = max_streak;
+    document.querySelector('.best_time').textContent = best_time;
 
-    document.querySelector('.splash .text').innerHTML = 'PREPARING INTERFACE...';
+    document.querySelector('.splash .text').textContent = 'PREPARING INTERFACE...';
 
     codes = [];
     for(let i = 0; i<80; i++){
@@ -252,22 +249,26 @@ function start(){
     }
     correct_pos = random(0,80);
     to_find = getGroupFromPos(correct_pos);
-    to_find = '<div>'+codes[to_find[0]]+'</div> <div>'+codes[to_find[1]]+'</div> '+
-        '<div>'+codes[to_find[2]]+'</div> <div>'+codes[to_find[3]]+'</div>';
+
+    let findElem = document.querySelector('.minigame .hack .find');
+    findElem.textContent = '';
+    to_find.forEach(function(idx) {
+        let div = document.createElement('div');
+        div.textContent = codes[idx];
+        findElem.append(div);
+    });
 
     let codesElem = document.querySelector('.minigame .codes');
-    codesElem.innerHTML = '';
+    codesElem.textContent = '';
     for(let i=0; i<80; i++){
         let div = document.createElement('div');
-        div.innerHTML = codes[i];
+        div.textContent = codes[i];
         codesElem.append(div);
     }
-
-    document.querySelector('.minigame .hack .find').innerHTML = to_find;
     drawPosition();
 
-    timer_start = sleep(1000, function(){
-        document.querySelector('.splash .text').innerHTML = 'CONNECTING TO THE HOST';
+    timer_start = setTimeout(function(){
+        document.querySelector('.splash .text').textContent = 'CONNECTING TO THE HOST';
         document.querySelector('.minigame .hack').classList.remove('hidden');
 
         timer_game = setInterval(moveCodes, 1500);
@@ -280,41 +281,53 @@ function start(){
         
         if( document.querySelector('#hide_chars').checked && random(1,4) === 1 ){
             timer_hide = setInterval(function(){
-                document.querySelector('.minigame .hack .find').innerHTML = '';
+                document.querySelector('.minigame .hack .find').textContent = '';
             }, 3500);
         }
         
-        timer_finish = sleep(timeout, function(){
+        timer_finish = setTimeout(function(){
             game_started = false;
             streak = 0;
-            check();
-        });
-    });
+            stopTimer();
+            reset(false);
+            current_pos = correct_pos-codes_pos;
+            drawPosition('green', false);
+        }, timeout);
+    }, 1000);
 }
 
+let timerRunning = false;
+
 function startTimer(timeout){
-    timerStart = new Date();
-    timer_time = setInterval(timer,1, timeout);
-}
-function timer(timeout){
-    let timerNow = new Date();
-    let timerDiff = new Date();
-    timerDiff.setTime(timerNow - timerStart);
-    let ms = timerDiff.getMilliseconds();
-    let sec = timerDiff.getSeconds();
-    if (ms < 10) {ms = "00"+ms;}else if (ms < 100) {ms = "0"+ms;}
-    document.querySelector('.streaks .time').innerHTML = sec+"."+ms;
-    let ms2 = (999-ms);
-    if (ms2 > 99) ms2 = Math.floor(ms2/10);
-    if (ms2 < 10) ms2 = "0"+ms2;
-    document.querySelector('.hack .timer').innerHTML = (timeout-1-sec)+"."+ms2;
+    timerStart = Date.now();
+    const timerTimeoutMs = parseInt(timeout, 10) * 1000;
+    timerRunning = true;
+    function tick() {
+        if (!timerRunning) return;
+        const elapsed = Date.now() - timerStart;
+        const sec = Math.floor(elapsed / 1000);
+        const ms = elapsed % 1000;
+        const msStr = ms < 10 ? "00" + ms : ms < 100 ? "0" + ms : String(ms);
+        document.querySelector('.streaks .time').textContent = sec + "." + msStr;
+
+        const remaining = Math.max(0, timerTimeoutMs - elapsed);
+        const remSec = Math.floor(remaining / 1000);
+        const remCenti = Math.floor((remaining % 1000) / 10);
+        const remCentiStr = remCenti < 10 ? "0" + remCenti : String(remCenti);
+        document.querySelector('.hack .timer').textContent = remSec + "." + remCentiStr;
+
+        timer_time = requestAnimationFrame(tick);
+    }
+    timer_time = requestAnimationFrame(tick);
 }
 function stopTimer(){
-    clearInterval(timer_time);
+    timerRunning = false;
+    cancelAnimationFrame(timer_time);
 }
 function resetTimer(){
-    clearInterval(timer_time);
-    document.querySelector('.streaks .time').innerHTML = '0.000';
+    timerRunning = false;
+    cancelAnimationFrame(timer_time);
+    document.querySelector('.streaks .time').textContent = '0.000';
 }
 
 start();
