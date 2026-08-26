@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Hopscotch Minigame</title>
+    <meta name="description" content="Play the Hopscotch Minigame (USB) and find the correct pattern.">
+    <meta name="viewport" content="width=device-width, initial-scale=0.4">
+    <link rel="stylesheet" type="text/css" href="minigame.css">
+    <script src="../shared/settings.js"></script>
+    <script defer src="minigame.js"></script>
+</head>
+<body>
+    <h1 class="title">Hopscotch Minigame</h1>
+    <h3 class="description">
+        Play the Hopscotch Minigame, also known as USB — the Casino generators hack.
+        <br><br>
+        <u>How to play:</u> Connect blinking spots to bottom right doing the correct jumps.<br>
+        <sub>Note: The game could have multiple solutions. One solution is shown if failed.</sub>
+    </h3>
+    <div class="streaks">
+        STREAK: <span class="streak">0</span> <span class="fa">&#xf6ff;</span> MAX STREAK: <span class="max_streak">0</span>
+        <br>TIME: <span class="time">0.000</span> <span class="fa">&#xf2f2;</span> BEST TIME: <span class="best_time">0.000</span>
+    </div>
+    <div class="options">
+        <div class="option speed">
+            <label for="speed">Speed:</label>
+            <input id="speed" type="range" value="10" min="7" max="30" autocomplete="off">
+            <div class="speed_value">10s</div>
+        </div>
+    </div>
+    <div class="minigame">
+        <div class="splash"><div class="fa hacker">&#xf6ff;</div>Network Access Blocked... Override Required</div>
+        <div class="groups hidden"></div>
+    </div>
+    <div class="restart"><button class="btn_again">AGAIN!</button></div>
+</body>
+</html>

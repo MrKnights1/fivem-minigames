@@ -376,6 +376,7 @@
         .game-card:nth-child(7) { animation-delay: 0.44s; }
         .game-card:nth-child(8) { animation-delay: 0.50s; }
         .game-card:nth-child(9) { animation-delay: 0.56s; }
+        .game-card:nth-child(10) { animation-delay: 0.62s; }
 
         @keyframes cardIn {
             from {
@@ -441,7 +442,7 @@
         <div class="status-bar">
             <div class="status-item">
                 <div class="status-dot"></div>
-                <span>9 MODULES LOADED</span>
+                <span>10 MODULES LOADED</span>
             </div>
             <div class="status-item">
                 <span>ALL SYSTEMS NOMINAL</span>
@@ -556,10 +557,22 @@
                 <div class="game-desc">Drag the dots until no lines cross. Spatial reasoning under time pressure.</div>
                 <div class="card-tag">Spatial / Puzzle</div>
             </div>
+
+            <div class="game-card" data-game="hopscotch_game">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="5" rx="1"/><rect x="2" y="17" width="6" height="5" rx="1"/><rect x="16" y="17" width="6" height="5" rx="1"/><path d="M12 7v4"/><path d="M5 17v-3h14v3"/></svg>
+                    </div>
+                    <div class="card-arrow">&#8594;</div>
+                </div>
+                <div class="game-title">Hopscotch</div>
+                <div class="game-desc">The Casino generators hack. Jump by the numbers to the goal, then finish from memory.</div>
+                <div class="card-tag">Path / Memory</div>
+            </div>
         </div>
 
         <div class="footer">
-            <span>9 minigames available</span>
+            <span>10 minigames available</span>
         </div>
     </div>
 
@@ -575,7 +588,8 @@
             'word_memory_game': 'Word Memory',
             'thermite_game': 'Thermite',
             'hacking_device_game': 'Hacking Device',
-            'untangle_game': 'Untangle'
+            'untangle_game': 'Untangle',
+            'hopscotch_game': 'Hopscotch'
         };
 
         const menu = document.getElementById('menu');

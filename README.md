@@ -15,6 +15,9 @@ A collection of hacking minigames for FiveM, playable standalone in the browser.
 | **TypeRacer** | Type the shown words correctly before each one expires |
 | **Word Memory** | Words appear one at a time — remember which ones you've already seen |
 | **Thermite** | Match the pattern before it disappears |
+| **Hacking Device** | Find the target codes in a shuffling grid — WASD to move, Enter to select |
+| **Untangle** | Drag the dots until no lines cross, before time runs out |
+| **Hopscotch** | The Casino generators hack (a.k.a. USB) — jump by the numbers to the goal, then finish from memory |
 
 ## Running Locally
 
@@ -46,17 +49,30 @@ games/
   shared/
     howler.js                 # Audio library (Howler.js v2.2.4)
     nui-utils.js              # NUI communication utilities
+    settings.js               # Per-game option persistence (localStorage)
+    wordPool.js               # Shared word list
   data_miner_game/
   grid_memory_game/
   letter_sequence_game/
   pair_matching_game/
-  thermite_game/
   typeracer_game/
   word_memory_game/
+  thermite_game/
+  hacking_device_game/
+  untangle_game/
+  hopscotch_game/
 ```
 
-Each game folder contains:
-- `index.html` — game page with inline Tailwind CSS
+The NUI games (`data_miner`, `grid_memory`, `letter_sequence`, `pair_matching`, `typeracer`,
+`word_memory`) contain:
+- `index.html` — game page
 - `src/game.js` — game logic
 - `sounds/` — audio files
 - `assets/` — compiled CSS styles
+
+The standalone games (`thermite`, `hacking_device`, `untangle`, `hopscotch`) contain:
+- `index.html` — game page
+- `minigame.js` — game logic
+- `minigame.css` — styles
+
+Every game persists its options via `initSettings(name, selectors)` from `games/shared/settings.js`.
