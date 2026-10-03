@@ -252,7 +252,8 @@ function start(){
 
     let findElem = document.querySelector('.minigame .hack .find');
     findElem.textContent = '';
-    to_find.forEach(function(idx) {
+    to_find.forEach(function(idx, i) {
+        if (i > 0) findElem.append(' ');
         let div = document.createElement('div');
         div.textContent = codes[idx];
         findElem.append(div);
