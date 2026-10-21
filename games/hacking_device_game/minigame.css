@@ -86,12 +86,16 @@ body{
     padding: 9px 12px 9px 5px;
 }
 .minigame{
+    /* --u is one pixel of the original 540px board; the board shrinks to fit the screen.
+       The board is close to square (534 board pixels tall), so the height limit matches the width.
+       Width and padding both resolve 100% against the page, so the padding stays 30 board pixels. */
+    container-type: inline-size;
+    --u: calc(100cqw / 540);
+    --board-width: min(540px, 100%, 100vh - 16px);
     margin: 0 auto 20px;
-    width: 540px;
-    min-width: 540px;
-    max-width: 540px;
+    width: var(--board-width);
     background-color: #232832;
-    padding: 30px 0;
+    padding: calc(var(--board-width) * 30 / 540) 0;
 }
 .splash{
     display: inline-block;
@@ -101,8 +105,8 @@ body{
     font-size: 16px;
 }
 .splash .hacker{
-    font-size: 65px;
-    margin-bottom: 30px;
+    font-size: calc(65 * var(--u));
+    margin-bottom: calc(30 * var(--u));
 }
 .splash .text{
     font-weight: bold;
@@ -110,9 +114,9 @@ body{
 .minigame .find{
     text-align: center;
     color: white;
-    font-size: 30px;
+    font-size: calc(30 * var(--u));
 	user-select: none;
-    margin-top: 10px;
+    margin-top: calc(10 * var(--u));
 }
 .minigame .find > div{
     display: inline-block;
@@ -120,21 +124,21 @@ body{
 .minigame .timer{
     text-align: center;
     color: green;
-    font-size: 14px;
-    margin-bottom: 15px;
+    font-size: calc(14 * var(--u));
+    margin-bottom: calc(15 * var(--u));
 }
 .minigame .codes {
     display: flex;
     flex-wrap: wrap;
-    width: 400px;
+    width: calc(400 * var(--u));
     margin: auto;
 }
 .minigame .codes > div{
     flex: 1 0 10%;
-    margin: 7px 0;
+    margin: calc(7 * var(--u)) 0;
     color: white;
     text-align: center;
-    font-size: 18px;
+    font-size: calc(18 * var(--u));
 }
 .minigame .codes > div.red{
     color: red;

@@ -285,8 +285,7 @@ class GridMemoryGame {
     this.gridContainer.classList.add("input-locked");
 
     const gridSizeRem = this.gridSize * 4 + (this.gridSize - 1) * 0.5;
-    this.gridContainer.style.width = `${gridSizeRem}rem`;
-    this.gridContainer.style.height = `${gridSizeRem}rem`;
+    this.gridContainer.style.width = `min(${gridSizeRem}rem, 100%)`;
 
     const totalTiles = this.gridSize * this.gridSize;
     for (let tileIndex = 0; tileIndex < totalTiles; tileIndex++) {

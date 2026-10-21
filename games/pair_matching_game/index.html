@@ -10,7 +10,14 @@
     <script src="../shared/settings.js"></script>
     <script defer src="./src/game.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-Vn8GtttG.css">
-    <style>body{background:#111!important}</style>
+    <link rel="stylesheet" href="../shared/nui-responsive.css">
+    <style>
+        body{background:#111!important}
+        /* Four 6rem cards with 1rem gaps when they fit, smaller square cards otherwise */
+        #app{width:min(30rem, 100%)}
+        #card-container{width:min(27rem, 100%)}
+        #card-container .card{width:100%;height:auto;aspect-ratio:1}
+    </style>
   </head>
   <body>
     <!-- Main App Container -->

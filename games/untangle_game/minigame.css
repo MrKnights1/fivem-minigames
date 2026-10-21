@@ -96,20 +96,20 @@ body{
     text-align: center;
 }
 .minigame{
+    /* --u is one pixel of the original 540px board; the board shrinks to fit the screen */
+    container-type: inline-size;
+    --u: calc(100cqw / 540);
     margin: 0 auto 20px;
-    width: 540px;
-    min-width: 540px;
-    max-width: 540px;
-    height: 540px;
-    min-height: 540px;
-    max-height: 540px;
+    width: min(540px, 100%, 100vh - 16px);
+    aspect-ratio: 1;
+    min-height: 0;
     background-color: #232832;
 }
 
 .untanglecanvas {
-    height: 500px;
-    width: 500px;
-    margin: 20px;
+    height: calc(500 * var(--u));
+    width: calc(500 * var(--u));
+    margin: calc(20 * var(--u));
     background-color: #094e1c;
     touch-action: none;
 }
@@ -117,15 +117,15 @@ body{
 .splash{
     display: inline-block;
     width: 100%;
-    margin: 220px auto;
+    margin: calc(220 * var(--u)) auto;
     text-align: center;
     color: white;
     font-size: 16px;
     user-select: none;
 }
 .splash .hacker{
-    font-size: 65px;
-    margin-bottom: 30px;
+    font-size: calc(65 * var(--u));
+    margin-bottom: calc(30 * var(--u));
 }
 .hidden {
     display: none;

@@ -25,6 +25,19 @@ let intersections = [];
 
 let showIntersections = true;
 
+// Converts a pointer event to canvas drawing coordinates. The canvas is scaled to fit the
+// screen, so its drawing size (500x500) can differ from its on-screen size. Coordinates are
+// rounded to whole units like the dots, so the exact shared-endpoint check in detectIntersects holds.
+function toCanvasPoint(e) {
+    const rect = canvas.getBoundingClientRect();
+    const unitsPerPixel = canvas.width / rect.width;
+    return {
+        x: Math.round((e.clientX - rect.left) * unitsPerPixel),
+        y: Math.round((e.clientY - rect.top) * unitsPerPixel),
+        unitsPerPixel: unitsPerPixel,
+    };
+}
+
 function createDots() {
     let radius = 200;
     let centerX = 250;
@@ -214,13 +227,16 @@ function addListeners(){
         reset();
     });
     canvas.addEventListener('pointerdown', (e) => {
+        const point = toCanvasPoint(e);
+        // Grab radius is 20 screen pixels however much the canvas is scaled.
+        const grabRadius = 20 * point.unitsPerPixel;
         // Loop through all the dots to see if the pointer is inside one of them.
         for (let i = 0; i < dots.length; i++) {
           const dot = dots[i];
-          const dx = e.offsetX - dot.x;
-          const dy = e.offsetY - dot.y;
+          const dx = point.x - dot.x;
+          const dy = point.y - dot.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance <= 20) {
+          if (distance <= grabRadius) {
             selectedDot = dot;
             offset.x = dx;
             offset.y = dy;
@@ -232,8 +248,9 @@ function addListeners(){
     canvas.addEventListener('pointermove', (e) => {
         // If a dot is currently selected, move it to the new pointer position.
         if (selectedDot !== null) {
-          selectedDot.x = e.offsetX - offset.x;
-          selectedDot.y = e.offsetY - offset.y;
+          const point = toCanvasPoint(e);
+          selectedDot.x = point.x - offset.x;
+          selectedDot.y = point.y - offset.y;
           redraw(); // Redraw the dots and lines.
         }
     });

@@ -363,6 +363,21 @@
             border: none;
         }
 
+        /* Small screens: the game starts below the BACK button instead of underneath it */
+        @media (max-width: 768px), (max-height: 500px) {
+            .back-button {
+                top: 8px;
+                left: 8px;
+                padding: 6px 14px;
+                font-size: 0.75rem;
+            }
+
+            .game-frame {
+                top: 44px;
+                height: calc(100% - 44px);
+            }
+        }
+
         /* Staggered card entrance */
         .game-card {
             animation: cardIn 0.4s ease-out backwards;

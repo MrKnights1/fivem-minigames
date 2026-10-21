@@ -90,26 +90,26 @@ body{
     text-align: right;
 }
 .minigame{
+    /* --u is one pixel of the original 540px board; the board shrinks to fit the screen */
+    container-type: inline-size;
+    --u: calc(100cqw / 540);
     margin: 0 auto 20px;
-    width: 540px;
-    min-width: 540px;
-    max-width: 540px;
-    height: 540px;
-    min-height: 540px;
-    max-height: 540px;
+    width: min(540px, 100%, 100vh - 16px);
+    aspect-ratio: 1;
+    min-height: 0;
     background-color: #232832;
 }
 .splash{
     display: inline-block;
     width: 100%;
-    margin: 220px auto;
+    margin: calc(220 * var(--u)) auto;
     text-align: center;
     color: white;
     font-size: 16px;
 }
 .splash .hacker{
-    font-size: 65px;
-    margin-bottom: 30px;
+    font-size: calc(65 * var(--u));
+    margin-bottom: calc(30 * var(--u));
 }
 .groups{
     display: flex;
@@ -118,15 +118,15 @@ body{
     user-select: none;
 }
 .group{
-    width: 61px;
-    height: 61px;
-    border: 8px #232832 solid;
+    width: calc(61 * var(--u));
+    height: calc(61 * var(--u));
+    border: calc(8 * var(--u)) #232832 solid;
     background-color: #094e1c;
     font-family: "Font Awesome 5 Free", sans-serif;
-    font-size: 26px;
+    font-size: calc(26 * var(--u));
     color: white;
     text-align: center;
-    line-height: 60px;
+    line-height: calc(60 * var(--u));
 }
 .group:first-child {
     color: #008001!important;

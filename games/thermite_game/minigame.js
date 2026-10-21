@@ -11,12 +11,13 @@ let best_time = 99.999;
 
 let mode = parseInt(document.querySelector('#grid').value, 10) || 7;
 let mode_data = {};
-mode_data[5] = [10, '92px'];
-mode_data[6] = [14, '74px'];
-mode_data[7] = [18, '61px'];
-mode_data[8] = [20, '51px'];
-mode_data[9] = [24, '44px'];
-mode_data[10] = [28, '38px'];
+// [squares to remember, square size in pixels of the 540px board]
+mode_data[5] = [10, 92];
+mode_data[6] = [14, 74];
+mode_data[7] = [18, 61];
+mode_data[8] = [20, 51];
+mode_data[9] = [24, 44];
+mode_data[10] = [28, 38];
 
 // Get max streak from localStorage
 const stored_max_streak = localStorage.getItem('max-streak_thermite');
@@ -137,8 +138,9 @@ function start(){
 
     let div = document.createElement('div');
     div.classList.add('group');
-    div.style.width = mode_data[mode][1];
-    div.style.height = mode_data[mode][1];
+    const size = `calc(${mode_data[mode][1]} * var(--u))`;
+    div.style.width = size;
+    div.style.height = size;
     const groups = document.querySelector('.groups');
     for(let i=0; i < positions.length; i++){
         let group = div.cloneNode();

@@ -31,6 +31,21 @@ python3 -m http.server 8080
 
 Then open `http://localhost:8080` in your browser.
 
+## Running Tests
+
+Playwright tests check that every game fits the screen at phone, landscape, tablet and desktop
+sizes, and that desktop layouts keep their original sizes. They start their own static server
+(`python3 -m http.server`), so Python 3 is required.
+
+```bash
+npm install
+npx playwright install chromium
+npm test
+```
+
+Tests live in `tests/`. Each viewport is a Playwright project in `playwright.config.js`; run one with
+`npx playwright test --project=phone`.
+
 ## FiveM Integration
 
 Each game communicates via NUI messages (`fetchNUI`, `onNUIMessage`). In debug mode (outside FiveM), mock responses are used so the games are fully playable standalone.
@@ -51,6 +66,8 @@ games/
     nui-utils.js              # NUI communication utilities
     settings.js               # Per-game option persistence (localStorage)
     wordPool.js               # Shared word list
+    nui-responsive.css        # Small-screen layout for the NUI games
+    standalone-responsive.css # Compact header for the standalone games
   data_miner_game/
   grid_memory_game/
   letter_sequence_game/

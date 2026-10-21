@@ -271,6 +271,8 @@ class DataMinerGame {
     this.gridContainer.textContent = "";
     this.gridContainer.style.display = "grid";
     this.gridContainer.style.gridTemplateColumns = `repeat(${this.gridWidth}, minmax(0, 1fr))`;
+    this.gridContainer.style.setProperty("--cols", this.gridWidth);
+    this.gridContainer.style.setProperty("--rows", this.gridHeight);
     this.gridContainer.style.gap = "1px";
 
     const totalTiles = this.gridWidth * this.gridHeight;

@@ -10,7 +10,17 @@
     <script src="../shared/settings.js"></script>
     <script defer src="./src/game.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-BjO5NIdx.css">
-    <style>body{background:#111!important}</style>
+    <link rel="stylesheet" href="../shared/nui-responsive.css">
+    <style>
+        body{background:#111!important}
+        /* Tiles shrink so the whole grid fits the screen and the grid's own 70vh height cap
+           without scrolling (--cols and --rows are set by generateGrid). The subtracted pixels
+           are the padding and borders around the grid; the trailing 1px is the gap per tile. */
+        #gridContainer .tile{--tile-size:min(3rem, (90vw - 76px) / var(--cols) - 1px, (70vh - 4px) / var(--rows) - 1px)}
+        @media (max-width: 768px), (max-height: 500px){
+            #gridContainer .tile{--tile-size:min(3rem, (100vw - 92px) / var(--cols) - 1px, (70vh - 4px) / var(--rows) - 1px)}
+        }
+    </style>
   </head>
   <body>
     <div id="app" class="font-mono bg-gray-900 text-main-400 rounded-md relative hidden opacity-0 transition-opacity duration-1000 ease-in-out w-auto max-w-[90vw] px-4 pb-4"> <div class="p-4 flex flex-col">

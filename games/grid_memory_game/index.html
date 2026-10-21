@@ -10,7 +10,13 @@
     <script src="../shared/settings.js"></script>
     <script defer src="./src/game.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-C-QYql4X.css">
-    <style>body{background:#111!important}</style>
+    <link rel="stylesheet" href="../shared/nui-responsive.css">
+    <style>
+        body{background:#111!important}
+        /* The grid takes its full size when it fits and shrinks to the window otherwise */
+        #gridContainer{aspect-ratio:1}
+        #gridContainer .grid-tile{width:auto;height:auto;aspect-ratio:1}
+    </style>
   </head>
   <body>
     <div id="app" class="font-mono bg-gray-900 text-main-400 rounded-md relative hidden opacity-0 transition-opacity duration-1000 ease-in-out w-[30rem] max-w-[75rem]">
